@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>רצה: מרחק הפייסר לפי גובה</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#161616;--mute:#6f6f6b;--faint:#a3a39e;--rule:#e2e2de;--zone:#f3f3f0;--bg:#ffffff}
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"Heebo","Arial Hebrew",Arial,sans-serif;font-weight:300}
+  .wrap{max-width:1240px;margin:0 auto;padding:40px 40px 56px}
+  .crumb{font-size:13px;color:var(--mute);letter-spacing:.02em}
+  .crumb span{color:var(--faint);margin:0 6px}
+  h1{font-weight:400;font-size:34px;line-height:1.2;margin:10px 0 6px}
+  .lede{font-size:16px;color:var(--mute);margin:0 0 28px;max-width:640px;line-height:1.6}
+  .scene{border-top:1px solid var(--ink);padding-top:22px}
+  .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .hint{display:none;font-size:12px;color:var(--faint);margin-top:6px}
+  .cap{font-size:13px;font-weight:500;color:var(--mute);margin:0 0 10px;letter-spacing:.02em}
+  .grid{display:grid;grid-template-columns:280px 300px 1fr;gap:48px;align-items:start;border-top:1px solid var(--rule);margin-top:30px;padding-top:26px}
+  .detail svg{width:100%;max-width:340px;height:auto;display:block;margin-inline-start:auto}
+  .panel h2{font-size:13px;font-weight:500;color:var(--mute);margin:0 0 6px;letter-spacing:.02em}
+  .row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:11px 0;border-bottom:1px solid var(--rule);font-size:15px}
+  .row .k{color:var(--mute)}
+  .row .v{font-weight:400;white-space:nowrap}
+  .row.big .v{font-size:26px;font-weight:400}
+  .row.big{padding:14px 0}
+  .ctl{padding:14px 0 16px;border-bottom:1px solid var(--rule)}
+  .ctl .top{display:flex;justify-content:space-between;align-items:baseline;font-size:15px;margin-bottom:10px}
+  .ctl .top .k{color:var(--mute)} .ctl .top .v{font-weight:400}
+  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:18px;background:transparent;margin:0}
+  input[type=range]::-webkit-slider-runnable-track{height:1px;background:var(--ink)}
+  input[type=range]::-moz-range-track{height:1px;background:var(--ink)}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:var(--bg);border:1px solid var(--ink);margin-top:-6px;cursor:pointer}
+  input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;background:var(--bg);border:1px solid var(--ink);cursor:pointer}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+  .chip{font:inherit;font-size:12px;color:var(--mute);background:none;border:1px solid var(--rule);border-radius:999px;padding:4px 10px;cursor:pointer}
+  .chip:hover,.chip.on{color:var(--ink);border-color:var(--ink)}
+  .gap{height:26px}
+  .formula{font-size:13px;color:var(--mute);line-height:1.7;margin-top:14px}
+  .formula b{font-weight:400;color:var(--ink)}
+  figure{margin:0}
+  svg#dwg{width:100%;height:auto;display:block}
+  svg.dw text{font-family:"Heebo","Arial Hebrew",Arial,sans-serif;font-weight:300}
+  svg.dw line,svg.dw path,svg.dw rect,svg.dw circle,svg.dw polygon{vector-effect:non-scaling-stroke}
+  .legend{display:flex;flex-wrap:wrap;gap:22px;margin-top:14px;font-size:13px;color:var(--mute)}
+  .legend span{display:flex;align-items:center;gap:8px}
+  .notes{margin-top:44px;padding-top:18px;border-top:1px solid var(--rule);font-size:12.5px;color:var(--mute);line-height:1.8;max-width:820px}
+  .notes a{color:var(--mute)}
+  @media (max-width:1000px){.grid{grid-template-columns:1fr 1fr}.detail{grid-column:1 / -1}.detail svg{margin:0 auto}}
+  @media (max-width:640px){.scroll svg#dwg{min-width:780px}.hint{display:block}.wrap{padding:28px 20px 40px}.grid{grid-template-columns:1fr;gap:28px}h1{font-size:28px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="crumb">פייסר אוטונומי<span>/</span>ארגונומיה<span>/</span>אנשים בתנועה</div>
+  <h1>רצה: מרחק הפייסר לפי גובה</h1>
+  <p class="lede">כמה רחוק לפני הרצה הפייסר צריך לנוע כדי שיישב בדיוק על קו הראייה הטבעי שלה, 15 מעלות מתחת לאופק, בלי להרים או להוריד את הראש.</p>
+
+  <figure class="scene">
+      <div class="cap">מבט צד · מרחק הפייסר מהרצה</div>
+      <div class="scroll"><svg id="dwg" class="dw" viewBox="0 98 900 274" role="img" aria-label="שרטוט צד של רצה ופייסר, עם קו הראייה הטבעי ומידות">
+        <polygon id="zone" fill="var(--zone)"/>
+        <line x1="20" x2="880" y1="300" y2="300" stroke="var(--ink)" stroke-width="1"/>
+        <g id="hatch" stroke="var(--faint)" stroke-width="0.6"></g>
+        <line id="hor" x2="880" stroke="var(--faint)" stroke-width="0.8" stroke-dasharray="5 4"/>
+        <line id="l30" stroke="var(--faint)" stroke-width="0.8" stroke-dasharray="1.5 3"/>
+        <g id="fig">__FIGURE__</g>
+        <line id="l15" stroke="var(--ink)" stroke-width="1.1"/>
+        <path id="arc" fill="none" stroke="var(--ink)" stroke-width="0.7"/>
+        <text id="arcl" font-size="12" fill="var(--ink)" text-anchor="middle" dominant-baseline="central">15°</text>
+        <circle id="eye" r="2.6" fill="#fff" stroke="var(--ink)" stroke-width="1"/>
+
+        <g id="edim" stroke="var(--mute)" stroke-width="0.7"></g>
+        <text id="elab" font-size="12" fill="var(--mute)" text-anchor="middle" direction="rtl"></text>
+
+        <rect id="pac" fill="#fff" stroke="var(--ink)" stroke-width="1.1"/>
+        <line id="pband" stroke="var(--ink)" stroke-width="0.7"/>
+        <circle id="halo" r="6.5" fill="none" stroke="var(--faint)" stroke-width="0.7"/>
+        <circle id="plight" r="2.8" fill="var(--ink)"/>
+        <g id="pdim" stroke="var(--mute)" stroke-width="0.7"></g>
+        <text id="plab" font-size="12" fill="var(--mute)" text-anchor="middle" direction="rtl"></text>
+
+        <g id="ddim" stroke="var(--ink)" stroke-width="0.8"></g>
+        <text id="dlab" font-size="14" fill="var(--ink)" text-anchor="middle" direction="rtl" font-weight="400"></text>
+      </svg></div>
+      <div class="hint">אפשר לגלול את השרטוט הצידה</div>
+      <div class="legend">
+        <span><svg width="26" height="8" aria-hidden="true"><line x1="0" y1="4" x2="26" y2="4" stroke="#161616" stroke-width="1.1"/></svg>קו ראייה טבעי</span>
+        <span><svg width="26" height="8" aria-hidden="true"><line x1="0" y1="4" x2="26" y2="4" stroke="#a3a39e" stroke-width="1" stroke-dasharray="5 4"/></svg>קו אופק</span>
+        <span><svg width="18" height="12" aria-hidden="true"><rect width="18" height="12" fill="#f3f3f0" stroke="#e2e2de"/></svg>אזור צפייה נוח</span>
+        <span><svg width="26" height="8" aria-hidden="true"><line x1="0" y1="4" x2="26" y2="4" stroke="#a3a39e" stroke-width="1" stroke-dasharray="1.5 3"/></svg>גבול תחתון, 30 מעלות</span>
+      </div>
+    </figure>
+
+  <div class="grid">
+    <div class="panel">
+      <h2>קלט</h2>
+      <div class="ctl">
+        <div class="top"><span class="k">גובה הרצה</span><span class="v" id="hv">165 ס״מ</span></div>
+        <input type="range" id="H" min="145" max="190" step="0.5" value="165" aria-label="גובה הרצה">
+        <div class="chips">
+          <button class="chip" data-h="150.5">אישה נמוכה · 150.5</button>
+          <button class="chip" data-h="161">אישה ממוצעת · 161</button>
+          <button class="chip" data-h="174">גבר ממוצע · 174</button>
+          <button class="chip" data-h="185.5">גבר גבוה · 185.5</button>
+        </div>
+      </div>
+      <div class="ctl">
+        <div class="top"><span class="k">גובה הפייסר</span><span class="v" id="pv">40 ס״מ</span></div>
+        <input type="range" id="P" min="0" max="100" step="5" value="40" aria-label="גובה הפייסר">
+      </div>
+
+    </div>
+
+    <div class="panel">
+      <h2>מידות</h2>
+      <div class="row"><span class="k">גובה עיניים (0.936 מהגובה)</span><span class="v" id="ev">154.4 ס״מ</span></div>
+      <div class="row"><span class="k">קו ראייה טבעי</span><span class="v">15 מעלות מתחת לאופק</span></div>
+      <div class="row"><span class="k">אזור צפייה נוח</span><span class="v">0 עד 30 מעלות</span></div>
+      <div class="row big"><span class="k">מרחק מומלץ</span><span class="v" id="dv">4.3 מ׳</span></div>
+      <div class="row"><span class="k">מרחק מינימלי נוח</span><span class="v" id="mv">2.0 מ׳</span></div>
+      <p class="formula"><b>מרחק = 3.73 × (גובה עיניים פחות גובה הפייסר)</b><br>3.73 הוא 1 חלקי הטנגנס של 15 מעלות. המרחק המינימלי מחושב באותה דרך לזווית של 30 מעלות.</p>
+    </div>
+    <div class="panel detail">
+      <h2>פרט · גובה וגובה עיניים</h2>
+      <svg id="det" class="dw" viewBox="0 0 300 420" role="img" aria-label="פרט מוגדל של הרצה עם מידות הגובה וגובה העיניים">
+        <line id="dhor" x2="296" stroke="var(--faint)" stroke-width="0.8" stroke-dasharray="5 4"/>
+        <line id="dr15" stroke="var(--ink)" stroke-width="1.1"/>
+        <line id="dr30" stroke="var(--faint)" stroke-width="0.8" stroke-dasharray="1.5 3"/>
+        <path id="darc" fill="none" stroke="var(--ink)" stroke-width="0.7"/>
+        <text id="darcl" font-size="12" fill="var(--ink)" text-anchor="middle" dominant-baseline="central">15°</text>
+        <text id="darcl30" font-size="12" fill="var(--mute)" text-anchor="middle" dominant-baseline="central">30°</text>
+        <line x1="8" x2="296" y1="395" y2="395" stroke="var(--ink)" stroke-width="1"/>
+        <g id="dhatch" stroke="var(--faint)" stroke-width="0.6"></g>
+        <g id="dfig">__FIGURE__</g>
+        <circle id="deye" r="3" fill="#fff" stroke="var(--ink)" stroke-width="1"/>
+        <line id="dext1" stroke="var(--faint)" stroke-width="0.6"/>
+        <line id="dext2" stroke="var(--faint)" stroke-width="0.6"/>
+        <g id="dsdim" stroke="var(--mute)" stroke-width="0.7"></g>
+        <text id="dslab" font-size="12" fill="var(--mute)" text-anchor="middle" direction="rtl"></text>
+        <g id="dedim" stroke="var(--mute)" stroke-width="0.7"></g>
+        <text id="delab" font-size="12" fill="var(--mute)" text-anchor="middle" direction="rtl"></text>
+      </svg>
+    </div>
+  </div>
+
+  <div class="notes">
+    <div>גובה העיניים מחושב כ-0.936 מגובה הגוף. היחס נגזר מטבלת הנתונים האנתרופומטריים של מבוגרים בריטים בני 19 עד 65 (גובה מול גובה עיניים, אחוזונים 5, 50 ו-95), וגם הגבהים בכפתורים לקוחים ממנה: <a href="https://amesweb.info/ergonomics/anthropometry-definition.aspx" target="_blank" rel="noopener">AmesWeb, Anthropometry</a>.</div>
+    <div>קו ראייה טבעי של כ-15 מעלות מתחת לאופק, ואזור מועדף של 15 מעלות לכל כיוון סביבו: <a href="https://ccohs.gc.ca/oshanswers/ergonomics/office/monitor_positioning.html" target="_blank" rel="noopener">CCOHS, Positioning the Monitor</a>. הנתון מגיע ממחקרי צפייה במסכים. בזמן ריצה המבט כנראה רחוק יותר, ולכן כדאי לאמת עם רצים.</div>
+    <div>המרחק נמדד מנקודת העין עד נקודת האור בראש הפייסר. הפייסר מצויר כגוף כללי, לא כעיצוב סופי.</div>
+  </div>
+</div>
+
+<script>
+const S=1, G=300, EX=170, R=Math.PI/180, T15=Math.tan(15*R), T30=Math.tan(30*R), RATIO=0.936;
+const EYE_L=__EYE__, REF=165;
+const $=id=>document.getElementById(id);
+const set=(el,o)=>{for(const k in o) el.setAttribute(k,o[k]); return el;};
+const NS='http://www.w3.org/2000/svg';
+const fmt1=v=>(Math.round(v*10)/10).toLocaleString('he-IL',{minimumFractionDigits:1,maximumFractionDigits:1});
+const cm=v=>`${(Math.round(v*10)/10).toString()} ס״מ`;
+
+function dimLine(g, x1,y1,x2,y2, tick){
+  g.replaceChildren();
+  const add=(a,b,c,d)=>{const l=document.createElementNS(NS,'line'); set(l,{x1:a,y1:b,x2:c,y2:d}); g.appendChild(l);};
+  add(x1,y1,x2,y2);
+  const dx=x2-x1, dy=y2-y1, L=Math.hypot(dx,dy), nx=-dy/L*tick, ny=dx/L*tick;
+  add(x1+nx,y1+ny,x1-nx,y1-ny); add(x2+nx,y2+ny,x2-nx,y2-ny);
+}
+
+(function hatch(){
+  const g=$('hatch');
+  for(let x=24;x<880;x+=9){const l=document.createElementNS(NS,'line'); set(l,{x1:x,y1:300,x2:x-6,y2:306}); g.appendChild(l);}
+})();
+
+function render(){
+  const H=+$('H').value, P=+$('P').value, k=H/REF, E=H*RATIO;
+  const ey=G-E*S, d=(E-P)/T15, px=EX+d*S, pt=G-P*S, x30=EX+(E/T30)*S, dmin=(E-P)/T30;
+
+  set($('zone'),{points:`${EX},${ey} 880,${ey} 880,${G} ${x30},${G}`});
+  set($('hor'),{x1:EX,y1:ey,y2:ey});
+  set($('l30'),{x1:EX,y1:ey,x2:x30,y2:G});
+  set($('fig'),{transform:`translate(${EX-EYE_L[0]*k*S} ${G}) scale(${k*S} ${-k*S})`});
+  set($('l15'),{x1:EX,y1:ey,x2:px,y2:pt});
+  set($('arc'),{d:`M ${EX+70} ${ey} A 70 70 0 0 1 ${EX+70*Math.cos(15*R)} ${ey+70*Math.sin(15*R)}`});
+  set($('arcl'),{x:EX+84*Math.cos(7.5*R),y:ey+84*Math.sin(7.5*R)});
+  set($('eye'),{cx:EX,cy:ey});
+
+  const xe=58;
+  dimLine($('edim'), xe,G, xe,ey, 4);
+  set($('elab'),{x:xe-9,y:(G+ey)/2+8,transform:`rotate(-90 ${xe-9} ${(G+ey)/2+8})`}).textContent=`עיניים ${cm(E)}`;
+
+  const w=34, ph=Math.max(P*S,4), r=Math.min(9,ph/2);
+  set($('pac'),{x:px-w/2,y:G-ph,width:w,height:ph,rx:r});
+  const showBand=ph>18;
+  set($('pband'),{x1:px-w/2+3,x2:px+w/2-3,y1:G-ph+9,y2:G-ph+9,visibility:showBand?'visible':'hidden'});
+  const ly=P===0?G-ph:pt;
+  set($('plight'),{cx:px,cy:ly}); set($('halo'),{cx:px,cy:ly});
+  const xp=px+w/2+14, showP=P>=10;
+  dimLine($('pdim'), xp,G, xp,pt, 4);
+  $('pdim').style.visibility=showP?'visible':'hidden';
+  set($('plab'),{x:xp+11,y:(G+pt)/2,transform:`rotate(-90 ${xp+11} ${(G+pt)/2})`,visibility:showP?'visible':'hidden'}).textContent=cm(P);
+
+  const yd=334;
+  const g=$('ddim'); dimLine(g, EX,yd, px,yd, 5);
+  [[EX,G+6,EX,yd+8],[px,G+6,px,yd+8]].forEach(c=>{const l=document.createElementNS(NS,'line'); set(l,{x1:c[0],y1:c[1],x2:c[2],y2:c[3],stroke:'#a3a39e','stroke-width':0.7}); g.appendChild(l);});
+  set($('dlab'),{x:(EX+px)/2,y:yd-9}).textContent=`מרחק ${fmt1(d/100)} מ׳`;
+
+  renderDetail(H,E,k);
+  $('hv').textContent=cm(H); $('pv').textContent=cm(P); $('ev').textContent=cm(E);
+  $('dv').textContent=`${fmt1(d/100)} מ׳`; $('mv').textContent=`${fmt1(dmin/100)} מ׳`;
+  document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on', +c.dataset.h===H));
+}
+(function(){const g=$('dhatch');for(let x=12;x<296;x+=9){const l=document.createElementNS(NS,'line');set(l,{x1:x,y1:395,x2:x-6,y2:401});g.appendChild(l);}})();
+function renderDetail(H,E,k){
+  const D=1.9, DG=395, DX=176, ey=DG-E*D, top=DG-H*D;
+  set($('dfig'),{transform:`translate(${DX-EYE_L[0]*k*D} ${DG}) scale(${k*D} ${-k*D})`});
+  set($('deye'),{cx:DX,cy:ey});
+  set($('dhor'),{x1:DX,y1:ey,y2:ey});
+  const L=124;
+  set($('dr15'),{x1:DX,y1:ey,x2:DX+L*Math.cos(15*R),y2:ey+L*Math.sin(15*R)});
+  set($('dr30'),{x1:DX,y1:ey,x2:DX+L*Math.cos(30*R),y2:ey+L*Math.sin(30*R)});
+  set($('darc'),{d:`M ${DX+92} ${ey} A 92 92 0 0 1 ${DX+92*Math.cos(30*R)} ${ey+92*Math.sin(30*R)}`});
+  set($('darcl'),{x:DX+104*Math.cos(7.5*R),y:ey+104*Math.sin(7.5*R)});
+  set($('darcl30'),{x:DX+104*Math.cos(22.5*R),y:ey+104*Math.sin(22.5*R)});
+  dimLine($('dsdim'),22,DG,22,top,4);
+  set($('dslab'),{x:13,y:(DG+top)/2,transform:`rotate(-90 13 ${(DG+top)/2})`}).textContent=`גובה ${cm(H)}`;
+  dimLine($('dedim'),46,DG,46,ey,4);
+  set($('delab'),{x:37,y:(DG+ey)/2+10,transform:`rotate(-90 37 ${(DG+ey)/2+10})`}).textContent=`עיניים ${cm(E)}`;
+  set($('dext1'),{x1:18,y1:top,x2:DX+(4.6-EYE_L[0])*k*D-4,y2:top});
+  set($('dext2'),{x1:42,y1:ey,x2:DX+(-15.4-EYE_L[0])*k*D-4,y2:ey});
+}
+$('H').addEventListener('input',render); $('P').addEventListener('input',render);
+document.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>{$('H').value=c.dataset.h; render();}));
+render();
+</script>
+</body>
+</html>
