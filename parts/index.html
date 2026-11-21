@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="he" dir="rtl"><head>
+<html lang="he" dir="rtl" data-theme="light" style="color-scheme:light"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>הפייסר · איפה כל רכיב יושב</title>
@@ -260,7 +260,7 @@ try{
 }catch(e){ stage.insertAdjacentHTML('beforeend','<div class="err">ספריית התלת־ממד לא נטענה. רעננו את העמוד.</div>'); throw e; }
 
 // units: cm. X = width, Y = up (ground 0), Z = forward (front +). Rear (-Z) faces the runner.
-const LS='blade-parts-v1';
+const LS='pacer-parts-v2';
 const WX=18.2, RAIL_S=12, RAIL_UP=6, ARM=9, ARM_L=12, PY=12.5, PZ=Math.sqrt(144-(15-12.5)**2), PH0=Math.asin((15-12.5)/12);   // swing arm: pivot 11 cm ahead of the axle   // wheel track, jump-rail stroke (±6 around nominal)
 const TRAVEL=23.2, RAISE=11.3, RUN_RIDE=7.9, ST1=TRAVEL/2, ST2=TRAVEL/2, AXLE_Y=15, HEAD_TOP=33.4, TILT=18*Math.PI/180, R_WHEEL=15, B0=14.45;
 const SECT=[[4.0,3.0,0.15,B0],[3.2,2.2,0.15,B0+0.5],[2.4,1.4,0.12,B0+1.0]];
@@ -878,7 +878,7 @@ renderer.domElement.addEventListener('pointerup',e=>{
 
 // ---------- modes & configs ----------
 const MODES=[{ext:0,tilt:0,ride:0,rest:1,note:'מנוחה: העמוד נסגר, הזרועות מסתובבות עד שהן עומדות זקופות, והגוף יורד 9.5 ס״מ עד שהוא שוכב על הרצפה, על הרגליות שמתחת למגש ועל תרמילי המנועים. אפשר לכבות את הכלי, והוא נשאר יציב בלי רגלית.'},
- {ext:0,tilt:0,ride:RUN_RIDE,note:'ניטרלי: הכלי דולק ומאזן את עצמו, העמוד סגור. מוכן לצאת לריצה או לקפוץ.'},
+ {ext:0,tilt:0,ride:0,note:'ניטרלי: הכלי דולק ומאזן את עצמו, העמוד סגור והגוף נמוך בין הגלגלים, כ‑41 ס״מ. מוכן לצאת לריצה או לקפוץ.'},
  {ext:1,tilt:0,ride:RUN_RIDE,note:'ריצה: העמוד נפתח '+TRAVEL+' ס״מ והזרועות מרימות את הגוף '+RUN_RIDE+' ס״מ. בזווית הזאת הגלגל יושב מתחת למרכז הכובד והגוף עומד ישר. גובה כ‑72 ס״מ.'},
  {ext:1,tilt:TILT,ride:RAISE,note:'נשיאה: הזרועות מרימות את הגוף עוד '+(RAISE-RUN_RIDE).toFixed(1)+' ס״מ ומשלימות ל‑75 ס״מ. מחזיקים בידית שבקדמת הראש ומושכים כמו טרולי.'}];
 let mode=0, ext=0, extLin=0, tiltLin=0, rideNow=0;
@@ -986,6 +986,8 @@ function evaluate(o){
   add(mo>=5.5?'ok':'warn','חפיפה בין מקטעי העמוד','חפיפה מינימלית '+mo.toFixed(1)+' ס״מ.');
   const Ld=S1.B.lidar, win=Ld.min.y+3.1; const block=o.comps.filter(c=>c.id!=='lidar'&&c.part==='upper'&&S1.B[c.id].max.y>win&&boxDist(S1.B[c.id],Ld)<25).map(c=>c.name);
   add(block.length?'warn':'ok','ל‑LiDAR יש אופק פתוח 360°',block.length?'מסתיר: '+block.join(', ')+'.':'שום רכיב בראש לא עולה מעל חלון הסריקה.');
+  { const sl=o.C.head.slot, x0=sl[0]-1.5, x1=sl[0]+sl[2]+1.5, z0=sl[1]-1.5, z1=sl[1]+sl[3]+1.5; const bl=o.comps.filter(c=>c.part==='upper'&&o.byId[c.id].visible&&S1.B[c.id].max.x>x0&&S1.B[c.id].min.x<x1&&S1.B[c.id].max.z>z0&&S1.B[c.id].min.z<z1).map(c=>c.name);
+    add(bl.length?'bad':'ok','ידית הנשיאה פנויה',bl.length?'חוסם את הידית: '+bl.join(', ')+'.':'יש 1.5 ס״מ פנויים סביב החריץ בשביל האצבעות.'); }
   const aj=boxDist(S1.B.ant,S1.B.jetson); add(aj>=15?'ok':aj>=10?'warn':'bad','אנטנה רחוקה מה‑Jetson בריצה','מרחק '+aj.toFixed(1)+' ס״מ.');
   { const sg=o.byId.screen, sc=V(); S0.B.screen.getCenter(sc); const n=new THREE.Vector3(0,0,-1).applyEuler(sg.rotation); const eye=new THREE.Vector3(0,160,-200).sub(sc); const off=Math.acos(n.dot(eye.normalize()))*180/Math.PI;
     add(off<=30?'ok':off<=45?'warn':'bad','המסך פונה לעיני הרץ','רץ 2 מ׳ מאחור רואה את המסך '+off.toFixed(0)+'° מהניצב (נוח עד 30°).'); }
@@ -1022,7 +1024,7 @@ const weightBars=[['גלגלים ומנועים','#3B4148',['wheels']],['מנו�
 function runChecks(){
   const R={}; ['a','b','c'].forEach(k=>R[k]=evaluate(CFG[k])); const r=R[cur.key];
   checksEl.innerHTML=r.out.map(o=>'<div class="ck '+o.s+'"><i>'+(o.s==='ok'?'✓':o.s==='warn'?'!':'✕')+'</i><b>'+o.t+'</b><span>'+o.d+'</span></div>').join('');
-  cur.topOff=r.S1.top-TRAVEL; document.getElementById('sH').textContent=(r.S0.top-(PY+ARM_L-AXLE_Y)).toFixed(0)+'→'+(r.S0.top+RUN_RIDE).toFixed(0)+'→'+(r.S1.top+RUN_RIDE).toFixed(0)+'→'+(r.S1.top+RAISE).toFixed(0);
+  cur.topOff=r.S1.top-TRAVEL; document.getElementById('sH').textContent=(r.S0.top-(PY+ARM_L-AXLE_Y)).toFixed(0)+'→'+(r.S0.top).toFixed(0)+'→'+(r.S1.top+RUN_RIDE).toFixed(0)+'→'+(r.S1.top+RAISE).toFixed(0);
   document.getElementById('sE').textContent=Math.round(r.area/OLD_AREA*100)+'%';
   document.getElementById('sW').textContent=(r.mm.m/1000).toFixed(1)+' ק״ג';
   barsEl.innerHTML=weightBars.map(([n,col,keys])=>{ const v=keys.reduce((a,k)=>a+r.mm.g[k],0); return '<div class="bar"><span>'+n+'</span><div class="tr"><i style="width:'+(v/r.mm.m*100).toFixed(1)+'%;background:'+col+'"></i></div><b>'+(v/1000).toFixed(2)+'</b></div>'; }).join('');
