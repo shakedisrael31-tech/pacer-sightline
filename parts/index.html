@@ -527,7 +527,10 @@ function buildMast(o,F){
   const C=o.C, mz=C.mastZ;
   o.tubes=SECT.map((s,i)=>{ const t=tube(s[0],s[1],s[2],TL,M(TUBEC[i],i?{metalness:0.3,roughness:0.45}:{metalness:0.55,roughness:0.38}),0,s[3],mz); return F(t,SECT_NAMES[i],o.mastG[i]); });
   o.tubes.forEach((t,i)=>{ if(i>0){ const s=SECT[i]; [-1,1].forEach(k=>o.mastG[i].add(box(0.12,1.2,s[1]*0.6,M('#f3efe6'),k*(s[0]/2+0.06),s[3]+0.9,mz))); } });
-  F(box(2.8,1,1.8,CNC,0,HEAD_TOP-0.65,mz),'צווארון ראש',o.upper);
+  // head mount: a machined plug inside the top of the inner tube, locked by a cross pin; the head shelf is screwed down onto it
+  F(box(2.05,1.5,1.05,CNC,0,HEAD_TOP-0.15-0.75,mz),'צווארון ראש',o.upper);
+  { const pin=cyl(0.18,2.9,STEEL,'x',0,HEAD_TOP-0.95,mz,10); o.upper.add(pin); o.frameBoxes.push(['צווארון ראש',pin]);
+    [-0.6,0.6].forEach(x=>{ const h=screwHead(x,HEAD_TOP+0.09,mz,'y'); h.userData.hw=true; o.upper.add(h); }); }
   const h=C.housing; F(box(h[0],h[1],h[2],MECH,h[3],FLOOR_TOP+0.9,h[4]),'תיבת הינע',o.mechFixed);
   const motor=new THREE.Group(); motor.add(box(3,4.2,3,BLACK,0,-0.4,0)); motor.add(cyl(1.3,0.8,MECH,'y',0,2.1,0,24)); motor.position.set(C.motor[0],B0+2.5,C.motor[1]);
   o.mechFixed.add(motor); o.frameBoxes.push(['מנוע הרמה',motor]); o.motor=motor;
@@ -592,7 +595,7 @@ function addMounts(o){
     if(sp.k==='so'){ if(sp.ax==='y'){ [[mn.x+ins,mn.z+ins],[mx.x-ins,mn.z+ins],[mn.x+ins,mx.z-ins],[mx.x-ins,mx.z-ins]].forEach(([x,z])=>{ put(cyl(0.22,0.3,NY,'y',x,mn.y-0.05,z,10),'buy'); put(cyl(0.26,0.1,HW,'y',x,mx.y+0.05,z,10),'buy'); }); }
       else { const L=sp.len||0.6, zf=sp.dir>0?mx.z:mn.z, sgn=sp.dir>0?1:-1; [[mn.x+ins,mn.y+ins],[mx.x-ins,mn.y+ins],[mn.x+ins,mx.y-ins],[mx.x-ins,mx.y-ins]].forEach(([x,y])=>{ put(cyl(0.22,L,NY,'z',x,y,zf+sgn*L/2,10),'buy'); put(cyl(0.26,0.1,HW,'z',x,y,(sp.dir>0?mn.z:mx.z)-sgn*0.05,10),'buy'); }); } }
     if(sp.k==='damp'){ [[mn.x+0.3,mn.z+0.3],[mx.x-0.3,mn.z+0.3],[mn.x+0.3,mx.z-0.3],[mx.x-0.3,mx.z-0.3]].forEach(([x,z])=>put(cyl(0.3,0.35,RB,'y',x,mn.y-0.15,z,12),'buy')); }
-    if(sp.k==='brk'){ const zb=sp.d<0?mn.z-0.15:mx.z+0.15; put(box(w*0.55,h+0.8,0.3,PR,cx,cy-0.2,zb),'print'); [-1,1].forEach(k=>put(cyl(0.26,0.1,HW,'z',cx+k*w*0.2,cy-0.2,zb+(sp.d<0?-0.2:0.2),10),'buy')); }
+    if(sp.k==='brk'){ const zb=sp.d<0?mn.z-0.15:mx.z+0.15, yb=c.part==='upper'?Math.max(mn.y-0.6,HEAD_TOP-c.pos[1]):mn.y-0.6, yt=mx.y+0.2; put(box(w*0.55,yt-yb,0.3,PR,cx,(yt+yb)/2,zb),'print'); if(c.part==='upper') put(box(w*0.55,0.3,1.6,PR,cx,yb+0.15,zb+(sp.d<0?-0.8:0.8)),'print'); [-1,1].forEach(k=>put(cyl(0.26,0.1,HW,'z',cx+k*w*0.2,cy-0.2,zb+(sp.d<0?-0.2:0.2),10),'buy')); }
     if(sp.k==='screws'){ const n=sp.n||4; const pts=n===2?[[mn.x+ins,cz],[mx.x-ins,cz]]:null;
       if(sp.face==='z+'){ [[mn.x+1,mn.y+1],[mx.x-1,mn.y+1],[mn.x+1,mx.y-1],[mx.x-1,mx.y-1]].forEach(([x,y])=>put(cyl(0.28,0.12,HW,'z',x,y,mx.z+0.06,10),'buy')); }
       else { (pts||[[mn.x+ins,mn.z+ins],[mx.x-ins,mn.z+ins],[mn.x+ins,mx.z-ins],[mx.x-ins,mx.z-ins]]).forEach(([x,z])=>put(cyl(0.26,0.12,HW,'y',x,mn.y-0.06,z,10),'buy')); } }
@@ -815,7 +818,7 @@ const FINFO=[
  [/לוח שדרה/,'לוח שדרה','פח 1.5 מ״מ, 115×113, מאחורי העמוד. מאחוריו המחשב, ומלפניו הבקר.','sheet','מדף אנכי שעליו יושב המוח של הכלי.'],
  [/מגש סוללה/,'מגש סוללה אחורי','פח מכופף שמוברג לגב הקורה. מחזיק את הסוללה ואת מאגר ההספק, ומאזן את המשקל של המנועים שבחזית.','sheet','סל שמחזיק את הסוללה מאחור, כמו משקל נגד בנדנדה.'],
  [/מקטע/,'עמוד טלסקופי','3 צינורות פחמן שנכנסים זה לתוך זה, כמו מקל סלפי. נפתח 23 ס״מ.','tube','הצוואר של הכלי. הוא נפתח כדי שהעיניים שבראש יראו רחוק.'],
- [/צווארון/,'צווארון ראש','חלק קטן מכורסם שמחבר את המקטע העליון של העמוד למדף הראש.','cnc','הבורג הגדול שמחזיק את הראש על הצוואר.'],
+ [/צווארון/,'צווארון ראש','פקק מכורסם שנכנס לראש הצינור הפנימי של העמוד ונעול בו בפין רוחבי. מדף הראש מונח עליו ומוברג אליו ב‑2 ברגים מלמעלה. ככה הראש יורד מהעמוד בשני ברגים בלבד.','cnc','הבורג הגדול שמחזיק את הראש על הצוואר.'],
  [/תיבת הינע/,'תיבת ההינע של העמוד','בית מודפס שמחזיק את הרצועה ואת הגלגלות שמסובבות את בורג ההרמה.','print','הקופסה שמסתירה את הגלגלים הקטנים שמרימים את הצוואר.'],
  [/מנוע הרמה/,'מנוע הרמה','מנוע קטן עם בורג שפותח וסוגר את העמוד.','buy','השריר של הצוואר.'],
  [/מדף עליון|שוליים/,'מדף הראש','לוח בחיתוך לייזר עם שוליים מכופפים. עליו ה‑LiDAR, האנטנה, הרמקול והמצלמה האחורית, ובאמצעו חור שהוא ידית הנשיאה.','sheet','הכובע של הכלי. עליו יושבים החושים שצריכים לראות הכי רחוק.'],
