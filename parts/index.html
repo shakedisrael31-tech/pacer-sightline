@@ -104,8 +104,8 @@ h1{margin:0;font-size:22px;font-weight:800;line-height:1.15;text-wrap:balance}
     <div class="card">
       <h2>מצב</h2>
       <div class="seg" role="group" aria-label="מצב הכלי">
-        <button type="button" data-m="0" aria-pressed="true">מנוחה</button>
-        <button type="button" data-m="1" aria-pressed="false">ניטרלי</button>
+        <button type="button" data-m="0" aria-pressed="false">מנוחה</button>
+        <button type="button" data-m="1" aria-pressed="true">ניטרלי</button>
         <button type="button" data-m="2" aria-pressed="false">ריצה</button>
         <button type="button" data-m="3" aria-pressed="false">נשיאה</button>
       </div>
@@ -884,7 +884,7 @@ const MODES=[{ext:0,tilt:0,ride:0,rest:1,note:'מנוחה: העמוד נסגר, 
 let mode=0, ext=0, extLin=0, tiltLin=0, rideNow=0;
 const modeBtns=[...document.querySelectorAll('[data-m]')];
 function setMode(m){ mode=m; modeBtns.forEach(b=>b.setAttribute('aria-pressed',+b.dataset.m===m)); document.getElementById('modeNote').textContent=MODES[m].note; if(window.__jReady&&cur) renderJumpNums(); }
-modeBtns.forEach(b=>b.onclick=()=>setMode(+b.dataset.m)); setMode(0);
+modeBtns.forEach(b=>b.onclick=()=>setMode(+b.dataset.m)); setMode(1);
 function pose(o,k){ o.stage1.position.y=ST1*k; o.stage2.position.y=ST2*k; o.upper.position.y=TRAVEL*k; }
 const cfgBtns=[...document.querySelectorAll('[data-c]')];
 function setCfg(k){
