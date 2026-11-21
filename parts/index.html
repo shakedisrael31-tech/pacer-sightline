@@ -87,7 +87,7 @@ h1{margin:0;font-size:22px;font-weight:800;line-height:1.15;text-wrap:balance}
 .lbl.old{border-color:#DD6826;color:#A84D17;background:rgba(255,246,238,.92)}
 .cmp td,.cmp th{text-align:center!important;font-family:var(--font)!important}.cmp td:first-child{text-align:right!important;color:var(--muted)}
 .cmp td.on,.cmp th.on{background:var(--surface2);font-weight:700}
-.steps{list-style:disc}.mfg{padding:7px 0;border-top:1px solid var(--line);font-size:13px;line-height:1.45;color:var(--muted)}.mfg>b{display:block;color:var(--ink);font-size:14px}.mfg>b i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-left:6px}.mfg div b{color:var(--ink);font-weight:600}.kid{margin-top:8px;padding:9px 11px;border-radius:10px;background:#FFF4DC;border:1px solid #F0D9A6;font-size:14px;line-height:1.5;color:#4a3b14}.sel.pulse{animation:pls 1.2s ease}@keyframes pls{0%{box-shadow:0 0 0 0 rgba(224,112,47,.55)}100%{box-shadow:0 0 0 14px rgba(224,112,47,0)}}.sel{scroll-margin-top:12px}.btn[aria-pressed="true"]{background:var(--ink);color:var(--bg)}.bom tr[data-mech],.bom tr[data-comp]{cursor:pointer}.bom tr[data-mech]:hover,.bom tr[data-comp]:hover{background:var(--surface2)}.bom a{color:var(--accent)}
+.steps{list-style:disc}.mfgbox{margin-top:8px;padding:8px 11px;border-radius:10px;background:var(--surface2);border:1px solid var(--line);font-size:13.5px;line-height:1.5}.mfgbox>b{display:block;font-size:14px}.mfgbox>b i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-left:6px}.mfg{padding:7px 0;border-top:1px solid var(--line);font-size:13px;line-height:1.45;color:var(--muted)}.mfg>b{display:block;color:var(--ink);font-size:14px}.mfg>b i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-left:6px}.mfg div b{color:var(--ink);font-weight:600}.kid{margin-top:8px;padding:9px 11px;border-radius:10px;background:#FFF4DC;border:1px solid #F0D9A6;font-size:14px;line-height:1.5;color:#4a3b14}.sel.pulse{animation:pls 1.2s ease}@keyframes pls{0%{box-shadow:0 0 0 0 rgba(224,112,47,.55)}100%{box-shadow:0 0 0 14px rgba(224,112,47,0)}}.sel{scroll-margin-top:12px}.btn[aria-pressed="true"]{background:var(--ink);color:var(--bg)}.bom tr[data-mech],.bom tr[data-comp]{cursor:pointer}.bom tr[data-mech]:hover,.bom tr[data-comp]:hover{background:var(--surface2)}.bom a{color:var(--accent)}
 .wt .w{font-size:12px;color:var(--muted);font-weight:400}.wt td.n{font-family:var(--mono);direction:ltr;text-align:left;white-space:nowrap}.wt tr.tot td{border-top:2px solid var(--line);font-weight:700}
 .sl{display:grid;grid-template-columns:90px 1fr 60px;gap:8px;align-items:center;margin:4px 0}.sl b{font-family:var(--mono);font-size:13px;direction:ltr;text-align:left}.num{display:grid;grid-template-columns:1fr auto;gap:2px 12px;font-size:14px;margin-top:6px}.num b{font-family:var(--mono);direction:ltr;text-align:left}.num .k{color:var(--muted)}.tag{display:inline-block;padding:0 7px;border-radius:999px;font-size:12px;font-weight:700;font-family:var(--font)}.t-ok{background:#d8efe0;color:#1f6b3f}.t-warn{background:#f6e7c8;color:#8a5a0b}.t-bad{background:#f6d5d0;color:#9a2a1c}
 .zoom{position:absolute;bottom:14px;left:12px;display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:5px 8px;direction:ltr}.zoom button{width:32px;height:32px;border:1px solid var(--line);background:var(--surface2);color:var(--ink);border-radius:8px;font:inherit;font-size:18px;font-weight:700;cursor:pointer}.zoom input{width:160px;direction:ltr}
@@ -399,13 +399,13 @@ const CFGS={
  c:{ title:'ג · שלד T',
    note:'הקורה בין הגלגלים היא גם קופסת הסוללה: 2 חצאי סוללה משני צדי העמוד, ותיבת ההנעה בתוך הקורה. העמוד עולה ממרכז הקורה, ישר מעל הציר, וכל האלקטרוניקה תפוסה על לוח שדרה צר לאורכו. אין דפנות בכלל.',
    mastZ:0, housing:[5,1.8,8,0,1.2], motor:[0,3.6], pul2:[0,3.6], standZ:-5,
-   head:{z0:-8.5,z1:8,slot:[-4,-3.6,8,2.5]},
+   head:{z0:-8.5,z1:8,slot:[-4.5,4.7,9,2.4]},
    comps:{ batL:{base:'battery',name:'סוללה מוצקה (חצי שמאל)',pos:[-5.4,15.0,-9.0],size:[5.5,4,6],mass:250,dim:'כ‑100Wh, 13S/48V. במגש מאחורי הקורה, כמשקל נגד לתרמילי המנועים'}, batR:{base:'battery',name:'סוללה מוצקה (חצי ימין)',pos:[5.4,15.0,-9.0],size:[5.5,4,6],mass:250,dim:'כ‑100Wh, 13S/48V. במגש מאחורי הקורה, כמשקל נגד לתרמילי המנועים'},
      buf:{pos:[0,14.35,-9.0],size:[4.6,3.1,5],dim:'46×31×50 מ״מ, בין חצאי הסוללה, מחזיק כ‑1kW לחצי שנייה'}, bms:{name:'BMS',pos:[7.6,21.05,0],size:[5,0.8,4],mass:25,dim:'כרטיס 50×40, מנטר 13 תאים'}, fuse:{name:'eFuse',pos:[4.4,20.9,2.6],size:[1.5,0.5,1.5],mass:5,dim:'הגנת זרם על כרטיס הכוח'}, imu:{pos:[0,13.4,-4.1],mass:3,dim:'שבב 3×4.5 מ״מ על כרטיס קטן, על רצפת הקורה ליד הציר'},
      conv:{name:'ממיר GaN 48→12V',pos:[-7.5,21.1,0],size:[3.3,0.9,2.3],mass:20,dim:'33×23×9, עד 300W'}, camF:{pos:[0,14.3,7.25],size:[9,2.5,3.07],mass:50,dim:'90×25×31, נמוכה בחזית, מוטה 15° למטה'}, screen:{pos:[0,22,-11.3],rx:0.55,size:[22.8,14.8,0.5],mass:170,dim:'228×148×5, על 2 זרועות מהקורה'},
      jetson:{name:'מחשב AI',pos:[0,24.3,-3.55],type:'module',size:[7,6,2],mass:90,dim:'מודול 70×45 עם קירור, על לוח השדרה'}, micro:{name:'בקר + CAN‑FD',pos:[-4.2,24,0.5],size:[4,5,0.6],mass:10,dim:'כרטיס 40×50'},
      spk:{pos:[7,0,-5.2],part:'upper',hy:1.15,size:[1.6,1.2],mass:15,dim:'Ø32×12'},
-     lidar:{name:'LiDAR 360°',pos:[-5,0,4.3],hy:0,mass:200}, ant:{name:'אנטנת GNSS + RTK',pos:[5,0,4.3],hy:0.75,size:[2.8,1.2],mass:30,dim:'טלאי Ø56 + מודול RTK'}, camR:{pos:[0,0,-6.95],hy:1.3,size:[9,2.5,3.07],mass:50} },
+     lidar:{name:'LiDAR 360°',pos:[-5,0,-1.3],hy:0,mass:200}, ant:{name:'אנטנת GNSS + RTK',pos:[5,0,0.3],hy:0.75,size:[2.8,1.2],mass:30,dim:'טלאי Ø56 + מודול RTK'}, camR:{pos:[0,0,-6.95],hy:1.3,size:[9,2.5,3.07],mass:50} },
    frame:'c', frameMass:[['קורה',220,0,16.6,0],['קורה קדמית למנועים',160,0,13.5,9.5],['מגש סוללה אחורי',60,0,14,-9],['מכסי קצה',140,0,16,0],['לוח שדרה',50,0,26,-1.8],['זרועות מסך',50,0,19,-11],['פגושי גומי',40,0,14,-4],['ברגים',40,0,18,0]],
    parts:[['קורה','קופסה מפח 1.5 מ״מ, 211×110×80, עם 2 מחיצות. בתוכה ה‑IMU, ועל הגג ה‑BMS והממיר. גוף הקירור של הממיר'],['מכסי קצה','CNC, נועלים את הקופסה ונותנים לה קשיחות לפיתול'],['קורה קדמית למנועים','חלק CNC אחד: 2 דפנות חיצוניות עם המיסבים של הזרועות, 2 דפנות פנימיות שהמנועים מוברגים אליהן, 2 גשרים עליונים וצינור רוחבי מתחת למצלמה. מוברגת לחזית הקורה, וכל עומס הנחיתה נכנס דרכה'],['מגש סוללה אחורי','פח מכופף, מוברג לגב הקורה. מחזיק את הסוללה ואת מאגר ההספק ברצועה'],['לוח שדרה','פח 1.5 מ״מ, 115×113, מאחורי העמוד. מאחוריו המחשב, ומלפניו הבקר על עמודונים'],['זרועות מסך','2 פסים מכופפים מגב הקורה']],
    shell:['אין דפנות: בהיטל צד נשארים רק עיגול הגלגל ועמוד צר','הקליפה חופשית לגמרי מעל הקורה ומסביב לעמוד','הסוללה הופכת לחלק מבנה, ולכן צריך פאק בהזמנה'] }
@@ -775,7 +775,7 @@ const tc=new TransformControls(camera,renderer.domElement); tc.setTranslationSna
 tc.addEventListener('dragging-changed',e=>{ orbit.enabled=!e.value; if(!e.value){ persist(); runChecks(); } });
 tc.addEventListener('objectChange',()=>renderSel());
 let selected=null;
-function select(g){ selected=g; if(g) selMech=null; if(g&&!(typeof EX!=='undefined'&&EX.on)) tc.attach(g); else tc.detach(); renderSel(); }
+function select(g){ selected=g; if(g){ selMech=null; selFrame=null; } if(g&&!(typeof EX!=='undefined'&&EX.on)) tc.attach(g); else tc.detach(); renderSel(); }
 function persist(){ if(!selected) return; const c=selected.userData.comp; (saved[cur.key]=saved[cur.key]||{})[c.id]={p:selected.position.toArray().map(v=>Math.round(v*10)/10),r:selected.rotation.y}; save(); }
 const KID={
  batL:'זה המיכל של האנרגיה, כמו בטן מלאה. בלי הסוללה הכלי לא יכול לזוז בכלל.',
@@ -799,16 +799,39 @@ const KID={
  arm:'הירך של הכלי. היא מחברת בין הגוף לגלגל, ובתוכה רצועה, כמו שרשרת של אופניים, שמעבירה את הכוח לגלגל.',
  belt:'כמו שרשרת של אופניים. היא מעבירה את הסיבוב מהמנוע שבגוף אל הגלגל.'
 };
-let selMech=null, lastShown=null;
+let selMech=null, lastShown=null, selFrame=null;
+const FINFO=[
+ [/^קורה \(/,'הקורה הראשית','קופסה מ‑4 פחים מכופפים (עליון, תחתון, חזית, גב) שמוברגים יחד, 211×110×80 מ״מ, פח 1.5 מ״מ. כל שאר החלקים מתחברים אליה.','sheet','עמוד השדרה של הגוף. כל החלקים נאחזים בה, כמו הענפים בגזע של עץ.'],
+ [/מחיצה/,'מחיצות פנימיות','2 פחים בתוך הקורה. הם מונעים ממנה להתעקם ונותנים מקום להבריג כרטיסים.','sheet','כמו קירות בתוך קופסת קרטון: בלעדיהם היא נמעכת.'],
+ [/מכסה קצה/,'מכסי קצה','2 חלקים מכורסמים שסוגרים את צידי הקורה ונועלים אותה נגד פיתול.','cnc','המכסים של הקופסה. הם מחזיקים אותה ישרה גם כשהגלגלים מושכים לכיוונים שונים.'],
+ [/קורה קדמית/,'קורה קדמית למנועים','חלק אחד מכורסם: 2 דפנות עם המיסבים של הזרועות, 2 דפנות שהמנועים מוברגים אליהן, גשרים וצינור רוחבי. כל עומס הנחיתה עובר דרכו.','cnc','הכתפיים של הכלי. הן מחזיקות את הזרועות ואת השרירים, וסופגות את המכה כשהוא נוחת.'],
+ [/לוח שדרה/,'לוח שדרה','פח 1.5 מ״מ, 115×113, מאחורי העמוד. מאחוריו המחשב, ומלפניו הבקר.','sheet','מדף אנכי שעליו יושב המוח של הכלי.'],
+ [/מגש סוללה/,'מגש סוללה אחורי','פח מכופף שמוברג לגב הקורה. מחזיק את הסוללה ואת מאגר ההספק, ומאזן את המשקל של המנועים שבחזית.','sheet','סל שמחזיק את הסוללה מאחור, כמו משקל נגד בנדנדה.'],
+ [/מקטע/,'עמוד טלסקופי','3 צינורות פחמן שנכנסים זה לתוך זה, כמו מקל סלפי. נפתח 23 ס״מ.','tube','הצוואר של הכלי. הוא נפתח כדי שהעיניים שבראש יראו רחוק.'],
+ [/צווארון/,'צווארון ראש','חלק קטן מכורסם שמחבר את המקטע העליון של העמוד למדף הראש.','cnc','הבורג הגדול שמחזיק את הראש על הצוואר.'],
+ [/תיבת הינע/,'תיבת ההינע של העמוד','בית מודפס שמחזיק את הרצועה ואת הגלגלות שמסובבות את בורג ההרמה.','print','הקופסה שמסתירה את הגלגלים הקטנים שמרימים את הצוואר.'],
+ [/מנוע הרמה/,'מנוע הרמה','מנוע קטן עם בורג שפותח וסוגר את העמוד.','buy','השריר של הצוואר.'],
+ [/מדף עליון|שוליים/,'מדף הראש','לוח בחיתוך לייזר עם שוליים מכופפים. עליו ה‑LiDAR, האנטנה, הרמקול והמצלמה האחורית, ובאמצעו חור שהוא ידית הנשיאה.','sheet','הכובע של הכלי. עליו יושבים החושים שצריכים לראות הכי רחוק.'],
+ [/זרועות מסך/,'זרועות מסך','2 פסים מכופפים שיוצאים מגב הקורה ומחזיקים את המסך בזווית של 32°.','sheet','הידיים שמחזיקות את המסך מול העיניים של הרץ.'],
+ [/פגוש/,'פגוש גומי','מסגרת גומי סביב מדף הראש.','print','מגן רך, כדי שאם הכלי נופל או נתקע במשהו, שום דבר לא יישבר.'],
+ [/ברג/,'ברגים','ברגי M3–M4 מנירוסטה.','buy','מה שמחזיק את כל החלקים יחד.']];
+function frameOf(m){ if(!cur.frameMap){ cur.frameMap=new Map(); cur.frameBoxes.forEach(([n,obj])=>obj.traverse(x=>{ if(x.isMesh&&!cur.frameMap.has(x)) cur.frameMap.set(x,n); }));
+    cur.L.frame.traverse(x=>{ if(x.isMesh&&!cur.frameMap.has(x)) cur.frameMap.set(x,x.userData.mfg==='buy'?'ברגים':'זרועות מסך'); });
+    cur.L.head.traverse(x=>{ if(x.isMesh&&!cur.frameMap.has(x)) cur.frameMap.set(x,x.userData.mfg==='print'?'פגוש גומי':'מדף עליון'); }); }
+  const n=cur.frameMap.get(m); if(!n) return null; const f=FINFO.find(r=>r[0].test(n)); return f?{f,n}:null; }
+function showFrame(hit){ select(null); selMech=null; const objs=[]; cur.frameMap.forEach((n,x)=>{ const g=FINFO.find(r=>r[0].test(n)); if(g===hit.f) objs.push(x); }); selFrame={f:hit.f}; renderSel(); flash(objs); }
 function mechOf(obj){ if(!cur.mechMap){ cur.mechMap=new Map(); Object.entries(cur.parts).forEach(([k,arr])=>arr.forEach(o=>o.traverse(m=>cur.mechMap.set(m,k)))); } return cur.mechMap.get(obj); }
-function showMech(k){ select(null); selMech=k; renderSel(); }
+function showMech(k){ select(null); selFrame=null; selMech=k; renderSel(); }
 function goSel(){ const card=selEl; card.scrollIntoView({behavior:'smooth',block:'start'}); card.classList.remove('pulse'); void card.offsetWidth; card.classList.add('pulse'); }
 const selEl=document.getElementById('sel');
 function renderSel(){
   const kidBox=t=>t?'<div class="kid"><b>במילים פשוטות:</b> '+t+'</div>':'';
   const lk=l=>l?'<div class="meta"><a href="'+l[1]+'" target="_blank" rel="noopener">'+l[0]+' ↗</a></div>':'';
-  const now=selected||selMech; if(now&&now!==lastShown) setTimeout(goSel,30); lastShown=now;
-  if(!selected&&selMech){ const r=MECHB.find(x=>x[0]===selMech); selEl.innerHTML='<div class="name">'+r[1]+'</div><div class="meta">'+r[2]+' · '+r[3]+' ג׳</div><div class="meta" style="font-family:var(--font)">'+r[5]+'</div>'+(MECH_MOUNT[selMech]?'<div class="meta" style="font-family:var(--font)"><b>חיבור:</b> '+MECH_MOUNT[selMech]+'</div>':'')+lk(r[4])+kidBox(KID[selMech])+'<div class="row" style="margin-top:8px"><button class="btn" type="button" id="bDesel">סיום</button></div>';
+  const mfgBox=k=>{ const v=MFG[k]; return '<div class="mfgbox"><b><i style="background:'+v[0]+'"></i>'+v[1]+'</b><div><b>אב טיפוס:</b> '+v[2]+'</div><div><b>סופי:</b> '+v[3]+'</div></div>'; };
+  const now=selected||selMech||(selFrame&&selFrame.f); if(now&&now!==lastShown) setTimeout(goSel,30); lastShown=now;
+  if(!selected&&!selMech&&selFrame){ const f=selFrame.f; selEl.innerHTML='<div class="name">'+f[1]+'</div><div class="meta" style="font-family:var(--font)">'+f[2]+'</div>'+mfgBox(f[3])+kidBox(f[4])+'<div class="row" style="margin-top:8px"><button class="btn" type="button" id="bDesel">סיום</button></div>';
+    document.getElementById('bDesel').onclick=()=>{ selFrame=null; renderSel(); }; return; }
+  if(!selected&&selMech){ const r=MECHB.find(x=>x[0]===selMech); selEl.innerHTML='<div class="name">'+r[1]+'</div><div class="meta">'+r[2]+' · '+r[3]+' ג׳</div><div class="meta" style="font-family:var(--font)">'+r[5]+'</div>'+(MECH_MOUNT[selMech]?'<div class="meta" style="font-family:var(--font)"><b>חיבור:</b> '+MECH_MOUNT[selMech]+'</div>':'')+lk(r[4])+mfgBox({wheel:'buy',drive:'buy',act:'buy',arm:'plate',belt:'buy'}[selMech])+kidBox(KID[selMech])+'<div class="row" style="margin-top:8px"><button class="btn" type="button" id="bDesel">סיום</button></div>';
     document.getElementById('bDesel').onclick=()=>{ selMech=null; renderSel(); }; return; }
   if(!selected){ selEl.innerHTML='<div class="hint">לחצו על רכיב כדי לבחור אותו. אפשר לגרור את החצים כדי להזיז אותו, או להסתיר אותו כדי לראות מה מאחוריו.</div>'; return; }
   const c=selected.userData.comp, p=selected.position;
@@ -842,7 +865,8 @@ renderer.domElement.addEventListener('pointerup',e=>{
   if(hit){ select(hit.object.userData.compGroup); return; }
   const mh=ray.intersectObjects(cur.allMeshes,false).find(h=>shown(h.object)&&!h.object.userData.shell&&mechOf(h.object)); const mk=mh&&mechOf(mh.object);
   if(mk){ showMech(mk); flash(cur.parts[mk]); return; }
-  if(!tc.axis){ selMech=null; select(null); }
+  { const fh=ray.intersectObjects(cur.allMeshes,false).find(h=>shown(h.object)&&!h.object.userData.shell); const fi=fh&&frameOf(fh.object); if(fi){ showFrame(fi); return; } }
+  if(!tc.axis){ selMech=null; selFrame=null; select(null); }
 });
 
 // ---------- modes & configs ----------
