@@ -861,9 +861,9 @@ renderer.domElement.addEventListener('pointermove',e=>{ if(e.buttons){ hoverLbl=
   for(const h of hits){ let a=h.object; while(a&&a!==cur.pivot){ const l=labels.find(x=>x.parent===a); if(l){ hoverLbl=l; break; } a=a.parent; } if(hoverLbl) break; }
   stage.style.cursor=hoverLbl&&tool!=='glass'?'pointer':(tool==='glass'?'crosshair':''); });
 renderer.domElement.addEventListener('pointerleave',()=>{ hoverLbl=null; });
-renderer.domElement.addEventListener('pointerdown',e=>{ down={x:e.clientX,y:e.clientY}; });
+renderer.domElement.addEventListener('pointerdown',e=>{ down={x:e.clientX,y:e.clientY,axis:!!(selected&&tc.axis)}; });
 renderer.domElement.addEventListener('pointerup',e=>{
-  if(!down) return; const moved=Math.hypot(e.clientX-down.x,e.clientY-down.y); down=null; if(moved>5||tc.dragging) return;
+  if(!down) return; const moved=Math.hypot(e.clientX-down.x,e.clientY-down.y), onGizmo=down.axis; down=null; if(moved>5||tc.dragging||onGizmo) return;
   const r=renderer.domElement.getBoundingClientRect(); ptr.set(((e.clientX-r.left)/r.width)*2-1, -((e.clientY-r.top)/r.height)*2+1);
   ray.setFromCamera(ptr,camera);
   if(tool==='glass'){ const hits=ray.intersectObjects(cur.allMeshes,false).filter(h=>shown(h.object));
@@ -873,7 +873,7 @@ renderer.domElement.addEventListener('pointerup',e=>{
   const mh=ray.intersectObjects(cur.allMeshes,false).find(h=>shown(h.object)&&!h.object.userData.shell&&mechOf(h.object)); const mk=mh&&mechOf(mh.object);
   if(mk){ showMech(mk); flash(cur.parts[mk]); return; }
   { const fh=ray.intersectObjects(cur.allMeshes,false).find(h=>shown(h.object)&&!h.object.userData.shell); const fi=fh&&frameOf(fh.object); if(fi){ showFrame(fi); return; } }
-  if(!tc.axis){ selMech=null; selFrame=null; select(null); }
+  selMech=null; selFrame=null; lastShown=null; select(null);
 });
 
 // ---------- modes & configs ----------
