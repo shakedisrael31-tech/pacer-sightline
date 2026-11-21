@@ -104,13 +104,14 @@ h1{margin:0;font-size:22px;font-weight:800;line-height:1.15;text-wrap:balance}
     <div class="card">
       <h2>מצב</h2>
       <div class="seg" role="group" aria-label="מצב הכלי">
-        <button type="button" data-m="0" aria-pressed="true">כבוי / אחסון</button>
-        <button type="button" data-m="1" aria-pressed="false">ריצה</button>
-        <button type="button" data-m="2" aria-pressed="false">נשיאה</button>
+        <button type="button" data-m="0" aria-pressed="true">מנוחה</button>
+        <button type="button" data-m="1" aria-pressed="false">ניטרלי</button>
+        <button type="button" data-m="2" aria-pressed="false">ריצה</button>
+        <button type="button" data-m="3" aria-pressed="false">נשיאה</button>
       </div>
       <p class="note" id="modeNote"></p>
       <div class="stats" style="margin-top:8px">
-        <div class="stat"><b id="sH">–</b><span>גובה: סגור→ריצה→נשיאה</span></div>
+        <div class="stat"><b id="sH">–</b><span>גובה: מנוחה→ניטרלי→ריצה→נשיאה</span></div>
         <div class="stat"><b id="sE">–</b><span>גוף בצד, מול הקודמת</span></div>
         <div class="stat"><b id="sW">–</b><span>משקל משוער</span></div>
       </div>
@@ -232,7 +233,7 @@ h1{margin:0;font-size:22px;font-weight:800;line-height:1.15;text-wrap:balance}
       <ul class="steps">
         <li><b>זרוע במקום מסילה:</b> אם המנוע בגוף והגלגל זז במסילה ישרה, המרחק ביניהם משתנה והרצועה נקרעת או מתרופפת. בזרוע שני הצירים יושבים עליה, אז המרחק קבוע. זה הפתרון שמשתמשים בו ב‑Ascento.</li>
         <li><b>הגוף עולה עם הזרועות בנשיאה:</b> בריצה העמוד פתוח והזרועות מרימות את הגוף 7.9 ס״מ, לגובה של כ‑72 ס״מ. זה לא גובה שרירותי: בזווית הזאת הגלגל יושב מתחת למרכז הכובד והגוף עומד ישר. בנשיאה הזרועות מרימות עוד 3.4 ס״מ ומשלימות ל‑75. הסוללה עברה למגש מאחורי הקורה, כמשקל נגד לתרמילי המנועים שבחזית. לכן העמוד צריך להיפתח רק 23 ס״מ, ויש בו 3 מקטעים במקום 4. הזרוע מתחילה 12° מעל האופק ויורדת עד 47° מתחתיו, ככה שהגלגל כמעט לא זז קדימה ואחורה (3.6 ס״מ) והכלי צריך לנטות רק כ‑5° כדי לאזן.</li>
-        <li><b>בלי רגלית:</b> כשהוא דולק הוא מאזן לבד. במצב כבוי הסימולציה מציגה אותו עומד; העמידה בפועל תיפתר בקליפה.</li>
+        <li><b>בלי רגלית:</b> במנוחה הזרועות מסתובבות עד שהן זקופות, והגוף יורד ושוכב על הרצפה, על 2 רגליות גומי מאחור ועל תרמילי המנועים מקדימה.</li>
         <li><b>המנועים בחזית התחתונה:</b> שני תרמילים (כתום = נסיעה, כחול = קפיצה) יושבים 12 ס״מ לפני הציר ומעט מתחתיו. ככה הגוף נהיה ארוך יותר בחזית ונמוך, והחזית מקבלת "סנטר". הקליפה צריכה לעטוף אותם.</li>
         <li><b>הגלגל בלי מנוע:</b> רק צמיג וחישוק. מתחת לזרוע נשאר כ‑1.3 ק״ג, וזה מה שמאפשר קפיצה בכוח קטן.</li>
         <li><b>הקורה קטנה ביותר מפי 2:</b> סוללה מוצקה של 200Wh היא בערך 0.26 ליטר. הקורה ירדה מעומק 14 ל‑11 ס״מ.</li>
@@ -463,7 +464,7 @@ function buildCfg(key){
   updateCables(o);
   o.pivot.traverse(m=>{ if(m.isMesh&&m.visible&&!m.userData.ghost) o.allMeshes.push(m); });
   // rear rubber skids under the battery tray: in rest the body kneels back onto them
-  [1,-1].forEach(sx=>{ const k=box(2.2,1.2,1.6,TPE,sx*6.4,FLOOR_TOP-0.75,-11.4); k.userData.mfg='print'; L.frame.add(k); o.frameBoxes.push(['פגוש גומי אחורי',k]); });
+  [1,-1].forEach(sx=>{ const k=box(2.2,2.9,1.6,TPE,sx*6.4,FLOOR_TOP-0.15-1.45,-11.4); k.userData.mfg='print'; L.frame.add(k); o.frameBoxes.push(['רגלית גומי אחורית',k]); });
   tagMfg(o);
   // rest pose: arms swing up and over (wheels move forward), body kneels back onto the rear skids
   o.pivot.updateMatrixWorld(true);
@@ -876,7 +877,10 @@ renderer.domElement.addEventListener('pointerup',e=>{
 });
 
 // ---------- modes & configs ----------
-const MODES=[{ext:0,tilt:0,ride:0,note:'כבוי: העמוד נסגר, הזרועות מסתובבות למעלה ומעל הציר, הגלגלים זזים קדימה, והגוף כורע לאחור על 2 פגושי גומי מתחת למגש הסוללה. 3 נקודות מגע: 2 גלגלים ופגושים מאחור. אין צורך ברגלית.'},{ext:1,tilt:0,ride:RUN_RIDE,note:'העמוד נפתח '+TRAVEL+' ס״מ והזרועות מרימות את הגוף '+RUN_RIDE+' ס״מ. בזווית הזאת הגלגל יושב בדיוק מתחת למרכז הכובד, אז הגוף עומד ישר. גובה בריצה כ‑72 ס״מ. ה‑LiDAR והאנטנה למעלה עם אופק פתוח.'},{ext:1,tilt:TILT,ride:RAISE,note:'הזרועות מרימות את הגוף עוד '+(RAISE-RUN_RIDE).toFixed(1)+' ס״מ (סה״כ '+RAISE+'), והגובה משלים ל‑75 ס״מ. מחזיקים בחור שבראש ומושכים כמו טרולי.'}];
+const MODES=[{ext:0,tilt:0,ride:0,rest:1,note:'מנוחה: העמוד נסגר, הזרועות מסתובבות עד שהן עומדות זקופות, והגוף יורד 9.5 ס״מ עד שהוא שוכב על הרצפה, על הרגליות שמתחת למגש ועל תרמילי המנועים. אפשר לכבות את הכלי, והוא נשאר יציב בלי רגלית.'},
+ {ext:0,tilt:0,ride:RUN_RIDE,note:'ניטרלי: הכלי דולק ומאזן את עצמו, העמוד סגור. מוכן לצאת לריצה או לקפוץ.'},
+ {ext:1,tilt:0,ride:RUN_RIDE,note:'ריצה: העמוד נפתח '+TRAVEL+' ס״מ והזרועות מרימות את הגוף '+RUN_RIDE+' ס״מ. בזווית הזאת הגלגל יושב מתחת למרכז הכובד והגוף עומד ישר. גובה כ‑72 ס״מ.'},
+ {ext:1,tilt:TILT,ride:RAISE,note:'נשיאה: הזרועות מרימות את הגוף עוד '+(RAISE-RUN_RIDE).toFixed(1)+' ס״מ ומשלימות ל‑75 ס״מ. מחזיקים בידית שבקדמת הראש ומושכים כמו טרולי.'}];
 let mode=0, ext=0, extLin=0, tiltLin=0, rideNow=0;
 const modeBtns=[...document.querySelectorAll('[data-m]')];
 function setMode(m){ mode=m; modeBtns.forEach(b=>b.setAttribute('aria-pressed',+b.dataset.m===m)); document.getElementById('modeNote').textContent=MODES[m].note; if(window.__jReady&&cur) renderJumpNums(); }
@@ -995,9 +999,9 @@ function evaluate(o){
   add('ok','מרכז הכובד עולה בפתיחה','מ‑'+m0.cg.y.toFixed(1)+' ל‑'+cg.y.toFixed(1)+' ס״מ. העמוד '+(mh<0.5?'בדיוק מעל הציר':mh.toFixed(1)+' ס״מ לפני הציר')+'.');
   { const a=armAng(-RUN_RIDE), zw=PZ-ARM_L*Math.cos(a), h=cg.y+RUN_RIDE-AXLE_Y, lean=Math.atan2(zw-cg.z,h)*180/Math.PI;
     add(Math.abs(lean)<=8?'ok':Math.abs(lean)<=14?'warn':'bad','איזון בריצה','בריצה הזרוע '+Math.abs(a*180/Math.PI).toFixed(0)+'° מתחת לאופק (כשהגוף למטה היא '+(PH0*180/Math.PI).toFixed(0)+'° מעליו, ובנשיאה '+Math.abs(armAng(-RAISE)*180/Math.PI).toFixed(0)+'° מתחתיו). הגלגל זז '+zw.toFixed(1)+' ס״מ קדימה ביחס לגוף. כדי שמרכז הכובד יהיה מעל הגלגל הכלי נוטה '+Math.abs(lean).toFixed(1)+'° '+(lean>0?'קדימה':'אחורה')+'.'); }
-  { const r=restSolve(o,REST.A), m0=massModel(o,0), M=m0.m/1000, wy=(r.Ay-AXLE_Y)*1.2/M, wz=r.Az*1.2/M, c=Math.cos(r.t), s=Math.sin(r.t);
-    const cgy=m0.cg.y+wy-r.Ay, cgz=m0.cg.z+wz-r.Az, zc=cgy*s+cgz*c; let rz=0; o.restPts.forEach(([p,n])=>{ const y=AXLE_Y+((p.y-r.Ay)*c-(p.z-r.Az)*s); if(y<=0.6){ rz=Math.min(rz,(p.y-r.Ay)*s+(p.z-r.Az)*c); } });
-    const ok=zc<0&&zc>rz; add(ok?'ok':'bad','במנוחה הוא עומד לבד, בלי רגלית','הזרועות ב‑'+(REST.A*180/Math.PI).toFixed(0)+'°, הגוף נשען '+(-r.t*180/Math.PI).toFixed(1)+'° אחורה על '+r.who+'. מרכז הכובד '+Math.abs(zc).toFixed(1)+' ס״מ מאחורי הגלגלים ו‑'+(zc-rz).toFixed(1)+' ס״מ לפני הפגושים, כלומר בין נקודות המגע.'); }
+  { const m0=massModel(o,0), M=m0.m/1000, Ay=PY+ARM_L*Math.sin(REST.A), Az=PZ-ARM_L*Math.cos(REST.A), cgz=m0.cg.z+(Az*1.2)/M-Az; let lo=1e9, rz=0;
+    o.restPts.forEach(([p,n])=>{ const y=p.y-(Ay-AXLE_Y); lo=Math.min(lo,y); }); o.restPts.forEach(([p,n])=>{ const y=p.y-(Ay-AXLE_Y); if(y<=lo+0.3) rz=Math.min(rz,p.z-Az); });
+    const ok=cgz<0&&cgz>rz; add(ok?'ok':'bad','במנוחה הוא שוכב יציב, בלי רגלית','הזרועות זקופות (90°), הגוף ירד '+(Ay-AXLE_Y).toFixed(1)+' ס״מ ונמצא '+Math.max(0,lo).toFixed(1)+' ס״מ מהרצפה. מרכז הכובד '+Math.abs(cgz).toFixed(1)+' ס״מ מאחורי הגלגלים ו‑'+(cgz-rz).toFixed(1)+' ס״מ לפני הרגליות האחוריות. גובה במנוחה '+(S0.top-(Ay-AXLE_Y)).toFixed(0)+' ס״מ.'); }
   let minY=1e9; Object.values(S0.B).forEach(b=>minY=Math.min(minY,b.min.y)); S0.F.forEach(f=>minY=Math.min(minY,f[1].min.y));
   add(minY+RUN_RIDE>=12?'ok':'warn','גחון 12 ס״מ בריצה','הנקודה הנמוכה (תרמילי המנועים) בגובה '+(minY+RUN_RIDE).toFixed(1)+' ס״מ בריצה, '+(minY+RAISE).toFixed(1)+' בנשיאה, ו‑'+Math.max(0,minY).toFixed(1)+' ס״מ כשהגוף למטה (כבוי ולפני קפיצה).');
   // body points (closed) rotated about the axle: braking pitch and trolley tilt
@@ -1018,7 +1022,7 @@ const weightBars=[['גלגלים ומנועים','#3B4148',['wheels']],['מנו�
 function runChecks(){
   const R={}; ['a','b','c'].forEach(k=>R[k]=evaluate(CFG[k])); const r=R[cur.key];
   checksEl.innerHTML=r.out.map(o=>'<div class="ck '+o.s+'"><i>'+(o.s==='ok'?'✓':o.s==='warn'?'!':'✕')+'</i><b>'+o.t+'</b><span>'+o.d+'</span></div>').join('');
-  cur.topOff=r.S1.top-TRAVEL; document.getElementById('sH').textContent=r.S0.top.toFixed(0)+'→'+(r.S1.top+RUN_RIDE).toFixed(0)+'→'+(r.S1.top+RAISE).toFixed(0);
+  cur.topOff=r.S1.top-TRAVEL; document.getElementById('sH').textContent=(r.S0.top-(PY+ARM_L-AXLE_Y)).toFixed(0)+'→'+(r.S0.top+RUN_RIDE).toFixed(0)+'→'+(r.S1.top+RUN_RIDE).toFixed(0)+'→'+(r.S1.top+RAISE).toFixed(0);
   document.getElementById('sE').textContent=Math.round(r.area/OLD_AREA*100)+'%';
   document.getElementById('sW').textContent=(r.mm.m/1000).toFixed(1)+' ק״ג';
   barsEl.innerHTML=weightBars.map(([n,col,keys])=>{ const v=keys.reduce((a,k)=>a+r.mm.g[k],0); return '<div class="bar"><span>'+n+'</span><div class="tr"><i style="width:'+(v/r.mm.m*100).toFixed(1)+'%;background:'+col+'"></i></div><b>'+(v/1000).toFixed(2)+'</b></div>'; }).join('');
@@ -1046,17 +1050,17 @@ const hand=new THREE.Group(); scene.add(hand); hand.visible=false;
   const arm=cyl(2.2,26,M('#D9A27E',{roughness:0.8,transparent:true,opacity:0.55}),'y',0,14,0.6,20); hand.add(arm); }
 function loop(now){
   const dt=Math.min(0.05,(now-last)/1000); last=now; const tgt=MODES[mode];
-  const eT=mode===1&&!J.on&&!J.pending?invEase(SP.ext):tgt.ext;
+  const eT=mode===2&&!J.on&&!J.pending?invEase(SP.ext):tgt.ext;
   if(Math.abs(extLin-eT)>0.0005){ const before=ext; extLin+=Math.sign(eT-extLin)*Math.min(Math.abs(eT-extLin),dt/2); ext=ease(extLin); pose(cur,ext);
     cur.leadScrew.rotation.y+=(ext-before)*260; cur.pul1.rotation.y=cur.pul2.rotation.y=cur.leadScrew.rotation.y; cur.pA.rotation.x+=(ext-before)*30; cur.pB.rotation.x+=(ext-before)*30; }
   if(!camAnim&&!J.on&&!J.pending){ const d=((25+14*ext)-orbit.target.y)*0.1; if(Math.abs(d)>1e-4){ orbit.target.y+=d; camera.position.y+=d; } }
   const fov=32+16*ext; if(Math.abs(camera.fov-fov)>0.01){ camera.fov=fov; camera.updateProjectionMatrix(); }
   const tTilt=tgt.tilt/TILT||0; if(Math.abs(tiltLin-tTilt)>0.0005){ tiltLin+=Math.sign(tTilt-tiltLin)*Math.min(Math.abs(tTilt-tiltLin),dt*1.6); }
-  { const lT=mode===1&&!J.on&&!J.pending?SP.lean:0; SP.now+=Math.sign(lT-SP.now)*Math.min(Math.abs(lT-SP.now),dt*0.35);
+  { const lT=mode===2&&!J.on&&!J.pending?SP.lean:0; SP.now+=Math.sign(lT-SP.now)*Math.min(Math.abs(lT-SP.now),dt*0.35);
     const t=Math.abs(tiltLin); cur.pivot.rotation.x=TILT*Math.sign(tiltLin)*(t<=1?ease(t):t)+SP.now; }
   jumpTick(dt);
   updateCables(cur);
-  hand.visible=mode===2&&extLin>0.98; if(hand.visible){ cur.upper.updateMatrixWorld(true); const p=new THREE.Vector3(cur.grip[0],HEAD_TOP+0.5,cur.grip[1]); cur.upper.localToWorld(p); hand.position.copy(p); }
+  hand.visible=mode===3&&extLin>0.98; if(hand.visible){ cur.upper.updateMatrixWorld(true); const p=new THREE.Vector3(cur.grip[0],HEAD_TOP+0.5,cur.grip[1]); cur.upper.localToWorld(p); hand.position.copy(p); }
   if(camAnim){ camAnim.t=Math.min(1,camAnim.t+dt/0.9); const k=1-Math.pow(1-camAnim.t,3); camera.position.lerpVectors(camAnim.from,camAnim.to,k); if(camAnim.tt) orbit.target.lerpVectors(camAnim.tf,camAnim.tt,k); if(camAnim.t>=1) camAnim=null; }
   { const kT=EX.on&&!J.on&&!J.pending?1:0; if(Math.abs(EX.k-kT)>0.001||EX.k>0){ EX.k+=Math.sign(kT-EX.k)*Math.min(Math.abs(kT-EX.k),dt*1.2); pose(cur,ext); explodeApply(cur,ease(EX.k)); updateCables(cur); } }
   labels.forEach(l=>{ l.visible=((tLbl.checked&&!l.userData.hoverOnly)||l===hoverLbl)&&shown(l.parent); });
@@ -1127,7 +1131,7 @@ function jumpPlan(){ // smallest motor force (both rails) that clears the curb; 
   const lf=F[F.length-1]; for(let i=0;i<300;i++) F.push(Object.assign({},lf,{t:lf.t+(i+1)*D,z:lf.z+(i<120?100*D*(i+1):100*D*120),ph:'עלה על המדרכה'}));
   return {F,st:r.st,Fside:r.st.Fpk/2,Pside:r.st.Ppk/2,soft:!!Fsoft}; }
 function jumpAt(T){ const F=J.R.F; let lo=0, hi=F.length-1; while(lo<hi){ const mid=(lo+hi+1)>>1; if(F[mid].t<=T) lo=mid; else hi=mid-1; } return F[lo]; }
-const REST={k:0, A:65*Math.PI/180};
+const REST={k:0, A:90*Math.PI/180};
 function restSolve(o,a){ const Ay=PY+ARM_L*Math.sin(a), Az=PZ-ARM_L*Math.cos(a); let best=null;
   for(let d=0;d<=60;d+=0.25){ const t=-d*Math.PI/180, c=Math.cos(t), s=Math.sin(t); let lo=1e9, who='';
     o.restPts.forEach(([p,n])=>{ const y=AXLE_Y+((p.y-Ay)*c-(p.z-Az)*s); if(y<lo){ lo=y; who=n; } }); if(lo<=0.05){ best={t,who,lo}; break; } }
@@ -1135,6 +1139,8 @@ function restSolve(o,a){ const Ay=PY+ARM_L*Math.sin(a), Az=PZ-ARM_L*Math.cos(a);
 function applyRest(o,k){ const a=PH0+(REST.A-PH0)*k, r=restSolve(o,REST.A), t=r.t*k, Ay=PY+ARM_L*Math.sin(a), Az=PZ-ARM_L*Math.cos(a), c=Math.cos(t), s=Math.sin(t);
   o.pivot.rotation.x=t; const dy=Ay-AXLE_Y, dz=Az; o.pivot.position.set(0,AXLE_Y-(dy*c-dz*s),-(dy*s+dz*c));
   o.cars.forEach(cr=>{ cr.rotation.x=a; cr.userData.wheel.rotation.x=-a; }); }
+function applyArm(o,a,z){ const Ay=PY+ARM_L*Math.sin(a), Az=PZ-ARM_L*Math.cos(a), t=o.pivot.rotation.x, c=Math.cos(t), s=Math.sin(t), dy=Ay-AXLE_Y;
+  o.pivot.position.set(0,AXLE_Y-(dy*c-Az*s),z-(dy*s+Az*c)); o.cars.forEach(cr=>{ cr.rotation.x=a; cr.userData.wheel.rotation.x=-z/RW-a; }); }
 function armAng(off){ return Math.asin(Math.max(-0.99,Math.min(0.99,Math.sin(PH0)+off/ARM_L))); }
 function applyRide(o,Y,off,z){ const a=armAng(off), zw=PZ-ARM_L*Math.cos(a), th=o.pivot.rotation.x, c=Math.cos(th), s=Math.sin(th);
   o.pivot.position.set(0,AXLE_Y+Y+off-(off*c-zw*s),z-(off*s+zw*c)); o.cars.forEach(c=>{ c.rotation.x=a; c.userData.wheel.rotation.x=-z/RW-a; }); }
@@ -1150,7 +1156,7 @@ function speedSolve(){ const tgt=Math.min(LEAN_MAX,SP.v*2)*Math.PI/180, base=lea
   const rows=[['נטייה קדימה',deg(SP.lean)+'°'],['זרוע מתחת לאופק',deg(-a)+'°'],['הגוף מורם',r.toFixed(1)+' cm'],['העמוד פתוח',(TRAVEL*SP.ext).toFixed(1)+' cm'],
     ['גובה כולל (עם ה‑LiDAR)',((cur.topOff||HEAD_TOP+7.5)+TRAVEL*SP.ext+r).toFixed(1)+' cm'],['המסך מול הרץ (בערך)',(5+SP.lean*180/Math.PI).toFixed(0)+'° מהניצב'],['מהלך שנשאר לזרוע למטה',left.toFixed(1)+' cm'],['נטייה שנדרשת רק נגד רוח וגלגול',drag.toFixed(1)+'°']];
   document.getElementById('spNums').innerHTML=rows.map(x=>'<span class="k">'+x[0]+'</span><b>'+x[1]+'</b>').join(''); }
-{ const el=document.getElementById('spV'); el.oninput=()=>{ SP.v=+el.value; document.getElementById('vSp').textContent=SP.v.toFixed(1)+' m/s'; if(mode!==1) setMode(1); speedSolve(); }; }
+{ const el=document.getElementById('spV'); el.oninput=()=>{ SP.v=+el.value; document.getElementById('vSp').textContent=SP.v.toFixed(1)+' m/s'; if(mode!==2) setMode(2); speedSolve(); }; }
 function renderJumpNums(){ if(!cur) return; const R=jumpPlan(); J.R=R; const tg=(v,a,b)=>'<span class="tag '+(v<=a?'t-ok':v<=b?'t-warn':'t-bad')+'">'+(v<=a?'סביר':v<=b?'גבולי':'קשה')+'</span>';
   if(R.fail){ document.getElementById('jumpNums').innerHTML='<span class="k">גם 2,000 ניוטון לצד לא מספיקים לגובה הזה</span><b>✕</b>'; return; }
   const s2=R.st; const eff=s2.ms/s2.M;
@@ -1164,21 +1170,20 @@ document.getElementById('jLight').onchange=e=>{ J.hub=e.target.checked; renderJu
 jH.oninput=()=>{ J.h=+jH.value; document.getElementById('vJH').textContent=J.h+' cm'; buildCurb(J.h); renderJumpNums(); };
 jRide.oninput=()=>{ J.ride=+jRide.value; document.getElementById('vRide').textContent=(J.ride>0?'+':'')+J.ride+' cm'; };
 document.getElementById('jumpSpd').onchange=e=>J.speed=+e.target.value;
-document.getElementById('jumpGo').onclick=()=>{ select(null); J.ride=0; jRide.value=0; jRide.oninput(); curb.visible=true; J.pending=true; J.R=null; if(mode===2) setMode(1); setNear(true); camAnim={from:camera.position.clone(),to:new THREE.Vector3(230,24,ZC-55),t:0,tf:orbit.target.clone(),tt:new THREE.Vector3(0,24,ZC-55)}; };
+document.getElementById('jumpGo').onclick=()=>{ select(null); J.ride=0; jRide.value=0; jRide.oninput(); curb.visible=true; J.pending=true; J.R=null; if(mode===3) setMode(2); setNear(true); camAnim={from:camera.position.clone(),to:new THREE.Vector3(230,24,ZC-55),t:0,tf:orbit.target.clone(),tt:new THREE.Vector3(0,24,ZC-55)}; };
 function jumpReset(){ J.on=false; J.pending=false; curb.visible=false; orbit.target.z=0; document.getElementById('jumpPh').textContent=''; }
 document.getElementById('jumpReset').onclick=()=>{ jumpReset(); J.ride=0; jRide.value=0; jRide.oninput(); setNear(false); setMode(mode);
   camAnim={from:camera.position.clone(),to:new THREE.Vector3(...VIEWS.iso),t:0,tf:orbit.target.clone(),tt:new THREE.Vector3(0,25+14*ext,0)}; };
 buildCurb(J.h); renderJumpNums();
 function jumpTick(dt){
-  const rT=(J.pending||J.on)?0:(mode===1?SP.ride:MODES[mode].ride)+J.ride; if(Math.abs(rideNow-rT)>0.01) rideNow+=Math.sign(rT-rideNow)*Math.min(Math.abs(rT-rideNow),dt*9);
-  { const kT=mode===0&&!J.on&&!J.pending&&!curb.visible?1:0; REST.k+=Math.sign(kT-REST.k)*Math.min(Math.abs(kT-REST.k),dt*0.5); }
+  const rT=(J.pending||J.on)?0:(mode===2?SP.ride:MODES[mode].ride)+J.ride; if(Math.abs(rideNow-rT)>0.01) rideNow+=Math.sign(rT-rideNow)*Math.min(Math.abs(rT-rideNow),dt*9);
+  { const kT=MODES[mode].rest&&!J.on&&!J.pending&&!curb.visible?1:0; REST.k+=Math.sign(kT-REST.k)*Math.min(Math.abs(kT-REST.k),dt*0.5); }
   if(J.pending&&REST.k<0.01&&Math.abs(rideNow)<0.02&&Math.abs(extLin-MODES[mode].ext)<0.01&&!camAnim){ J.pending=false; if(!J.R||J.R.fail) J.R=jumpPlan(); if(!J.R.fail){ J.on=true; J.t=0; } }
   circleG.visible=tCircle.checked&&!J.on&&!J.pending;
   if(J.on){ J.t+=dt*J.speed; const f=jumpAt(J.t); applyRide(cur,f.Y,f.off,f.z); document.getElementById('jumpPh').textContent=f.ph;
     const tz=Math.max(ZC-55,Math.min(ZC+60,f.z)); const dz=(tz-orbit.target.z)*0.12; orbit.target.z+=dz; camera.position.z+=dz;
     if(J.t>J.R.F[J.R.F.length-1].t){ J.t=J.R.F[J.R.F.length-1].t; } }
-  else if(REST.k>0.001){ applyRest(cur,ease(REST.k)); }
-  else { applyRide(cur,rideNow,-rideNow,0); }
+  else { const k=ease(REST.k), aN=armAng(-rideNow), a=aN+(REST.A-aN)*k; cur.pivot.rotation.x*=(1-k); applyArm(cur,a,0); }
 }
 
 
@@ -1235,7 +1240,7 @@ document.getElementById('zIn').onclick=()=>setDist(dist()*0.85); document.getEle
 setInterval(()=>{ if(!zDrag) zr.value=d2v(dist()); },150);
 
 document.getElementById('showMast').onclick=()=>{ select(null); const gl=g=>g.traverse(m=>{ if(m.isMesh&&!m.userData.mat0) setGlass(m,true); });
-  [cur.L.shell,cur.L.frame,cur.L.elec,cur.L.shellUp].forEach(gl); setNear(true); setMode(0); camAnim={from:camera.position.clone(),to:new THREE.Vector3(78,28,cur.C.mastZ),t:0,tf:orbit.target.clone(),tt:new THREE.Vector3(0,24,cur.C.mastZ)}; };
+  [cur.L.shell,cur.L.frame,cur.L.elec,cur.L.shellUp].forEach(gl); setNear(true); setMode(1); camAnim={from:camera.position.clone(),to:new THREE.Vector3(78,28,cur.C.mastZ),t:0,tf:orbit.target.clone(),tt:new THREE.Vector3(0,24,cur.C.mastZ)}; };
 setCfg('c'); renderWeights(); speedSolve();
 { const t=document.getElementById('tMfg'); t.onchange=()=>setMfg(t.checked);
   document.getElementById('mfgTab').innerHTML=Object.entries(MFG).map(([k,v])=>'<div class="mfg"><b><i style="background:'+v[0]+'"></i>'+v[1]+'</b><div>'+MFG_WHO[k]+'</div><div><b>אב טיפוס:</b> '+v[2]+'<br><b>סופי:</b> '+v[3]+'</div></div>').join(''); } requestAnimationFrame(loop);
