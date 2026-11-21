@@ -484,7 +484,7 @@ function buildCfg(key){
       P(box(5.65,0.4,LL,CR,sx*8.63,PY+3.25,zc),'קורה קדמית למנועים'); P(cyl(1.6,0.25,CR,'x',sx*11.55,PY,PZ,24),'קורה קדמית למנועים');
       [[PY+3.25,z0+0.6],[PY+3.25,z1-0.8],[PY-2.2,z1-0.8]].forEach(([y,z])=>{ const h=screwHead(sx*11.5,y,z,'x'); h.userData.hw=true; cr.add(h); });
     });
-    P(cyl(0.75,12,CR,'x',0,PY-1.2,PZ+0.6,20),'קורה קדמית למנועים');
+    P(cyl(0.75,12,CR,'x',0,PY-1.2,6.6,20),'קורה קדמית למנועים');   // cross tube sits under/behind the front camera, out of its view
     tagAt(L.frame,'קורה קדמית למנועים','fr',0,PY-3.4,PZ+1.5); }
   FRAMES[C.frame](o,F);
   buildMast(o,F);
@@ -1063,6 +1063,11 @@ function evaluate(o){
   const tr=lowAt(TILT,RAISE); add(tr>=3?'ok':tr>=1?'warn':'bad','שום דבר לא נוגע ברצפה במצב נשיאה','בהטיה של 18° קדימה הנקודה הנמוכה בגובה '+tr.toFixed(1)+' ס״מ.');
   { const g=o.byId.camF, c=V(); new THREE.Box3().setFromObject(g.children[0]).getCenter(c); const tilt=g.rotation.x, low=tilt+29*Math.PI/180; const cy=c.y+RUN_RIDE, d0=cy/Math.tan(low);
     const ahead=c.z+d0-R_WHEEL; add(ahead<=25?'ok':'warn','מצלמת העומק הקדמית רואה את הדרך','בריצה בגובה '+cy.toFixed(1)+' ס״מ (למטה '+c.y.toFixed(1)+'), מוטה '+(tilt*180/Math.PI).toFixed(0)+'°. רואה את הרצפה מ‑'+Math.max(0,ahead).toFixed(0)+' ס״מ לפני הצמיגים (שדה ראייה אנכי 58°).'); }
+  { const g=o.byId.camF; o.pivot.updateMatrixWorld(true); const lb=g.userData.lb, org=new THREE.Vector3((lb.min.x+lb.max.x)/2,(lb.min.y+lb.max.y)/2,lb.max.z+0.2).applyMatrix4(g.matrixWorld);
+    const own=new Set(); g.traverse(m=>own.add(m)); const tgt=o.allMeshes.filter(m=>!own.has(m)&&!m.userData.shell&&shown(m)); const rc=new THREE.Raycaster(); rc.far=60; let n=0, hit=0; const who={};
+    for(let i=0;i<=8;i++) for(let j=0;j<=6;j++){ const yaw=(-40+i*10)*Math.PI/180, pit=-(-14+j*58/6)*Math.PI/180-0; const d=new THREE.Vector3(Math.sin(yaw)*Math.cos(pit),Math.sin(pit),Math.cos(yaw)*Math.cos(pit)); rc.set(org,d.normalize()); n++;
+      const h=rc.intersectObjects(tgt,false).find(x=>x.point.y>0.3); if(h){ hit++; const nm=(o.frameMap&&o.frameMap.get(h.object))||((o.frameBoxes.find(f=>{ let a=h.object; while(a){ if(a===f[1]) return true; a=a.parent; } return false; })||[])[0])||'חלק'; who[nm]=(who[nm]||0)+1; } }
+    const pct=Math.round(hit/n*100); add(pct===0?'ok':pct<=10?'warn':'bad','שדה הראייה של המצלמה הקדמית פנוי',pct===0?'שום חלק של הכלי לא נכנס לתמונה של המצלמה הקדמית.':'בערך '+pct+'% מהתמונה מוסתרים על ידי: '+Object.keys(who).join(', ')+'.'); }
   const gripTrolley=AXLE_Y+(gripY-AXLE_Y)*Math.cos(TILT)-o.grip[1]*Math.sin(TILT);
   pose(o,ext); o.pivot.rotation.x=kT; o.pivot.position.copy(kP); o.pivot.updateMatrixWorld(true);
   return {out,mm,S0,S1,envD,envH,area,minY,hang,gripTrolley,cg0:m0.cg};
