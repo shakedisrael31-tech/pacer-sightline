@@ -305,6 +305,30 @@ const TRAVEL=23.2, RAISE=11.3, RUN_RIDE=7.9, ST1=TRAVEL/2, ST2=TRAVEL/2, AXLE_Y=
 const SECT=[[4.0,3.0,0.15,B0],[3.2,2.2,0.15,B0+0.5],[2.4,1.4,0.12,B0+1.0]];
 const TL=HEAD_TOP-0.15-SECT[2][3]; const CAMF_RX=15*Math.PI/180;
 const SECT_NAMES=['מקטע חיצוני','מקטע אמצעי','מקטע פנימי'];
+// ---------- sheet-metal flat patterns: thickness t, inner bend radius r, K-factor 0.33, bend allowance, holes, cut-outs and bend reliefs ----------
+// panel coords: base is centred (x across, z along); a flap's holes use u = along its hinge (0 = middle), v = distance out from the end of the bend.
+const H=(x,z,r)=>({c:[x,z,r]}), S=(x,z,w,h)=>({s:[x,z,w,h]});
+const FOLD={
+ body:{n:'צינור מלבני מקופל: תחתית, חזית, גג וגב, עם שוליים לחיבור. הצדדים נסגרים במכסי הקצה',t:0.15,r:0.15,w:21.1,d:11,
+   holes:[S(-7.35,3.0,4.5,2.6),S(7.35,3.0,4.5,2.6)],
+   c:[{e:'+z',d:7.85,holes:[S(0,5.6,4,2.5)],c:[{e:'+z',d:11,holes:[S(0,5.5,4.6,3.6),S(-7.35,8.5,4.5,2.6),S(7.35,8.5,4.5,2.6)]}]},
+      {e:'-z',d:7.85,c:[{e:'-z',d:1.0}]}]},
+ tray:{n:'U: בסיס ו‑2 דפנות',t:0.15,r:0.15,w:16.8,d:6.8,holes:[],c:[{e:'+x',d:4.6},{e:'-x',d:4.6}]},
+ cap:{n:'לוח צד עם 2 כנפיים קצרות שעוטפות את הקורה',t:0.2,r:0.2,w:8.2,d:11,
+   holes:[H(2.6,-4,0.2),H(2.6,4,0.2),H(-1.8,-4,0.2),H(-1.8,4,0.2)],c:[{e:'+x',d:0.65},{e:'-x',d:0.65}]},
+ cradle:{n:'U לכל צד: גשר עליון, דופן חיצונית עם המיסב ודופן פנימית עם המנוע',t:0.3,r:0.3,w:5.65,d:9.44,holes:[],
+   c:[{e:'+x',d:6.3,holes:[H(1.52,3.05,1.25),H(3.92,5.25,0.2)]},{e:'-x',d:6.0,w:8.44,holes:[H(2.02,3.05,1.0)]}]},
+ arm:{n:'שטוח: חיתוך לייזר בלבד, בלי כיפוף. 2 לוחות זהים לכל זרוע',t:0.3,r:0,w:2.6,d:15.6,round:1.3,flat:true,
+   holes:[H(0,6.0,0.55),H(0,-6.0,0.65),H(0,-3.2,0.2),H(0,3.2,0.2),S(0,0,0.9,3.2)],c:[]},
+ spine:{n:'לוח שטוח עם חריץ כבלים וחורים לעמודונים של המחשב והבקר',t:0.15,r:0,w:11.5,d:11.15,flat:true,
+   holes:[S(0.85,-3.575,7,2.6),H(3.9,-0.625,0.16),H(-2.2,-0.625,0.16),H(3.9,4.475,0.16),H(-2.2,4.475,0.16),H(-4.9,0.175,0.16),H(-1.8,0.175,0.16),H(-4.9,4.275,0.16),H(-1.8,4.275,0.16)],c:[]},
+ sarm:{n:'פס שטוח עם 2 חורים להברגה',t:0.3,r:0,w:1.2,d:5.7,flat:true,holes:[H(0,-2.3,0.17),H(0,2.3,0.17)],c:[]},
+ collar:{n:'U קטן שעוטף את ראש הצינור, עם חור לפין הרוחבי',t:0.2,r:0.2,w:2.8,d:1.8,holes:[H(-0.6,0,0.14),H(0.6,0,0.14)],c:[{e:'+x',d:1.6,holes:[H(0,0.6,0.18)]},{e:'-x',d:1.6,holes:[H(0,0.6,0.18)]}]},
+ gear:{n:'U: מכסה עם 2 דפנות',t:0.1,r:0.1,w:5,d:8,holes:[],c:[{e:'+x',d:1.8},{e:'-x',d:1.8}]},
+ brk:{n:'L: רגל להברגה למדף ודופן למצלמה',t:0.15,r:0.15,w:4.95,d:1.6,holes:[H(-1.5,0.1,0.16),H(1.5,0.1,0.16)],c:[{e:'-z',d:2.75,holes:[H(-1.8,1.1,0.16),H(1.8,1.1,0.16)]}]},
+ shelf:{n:'מגש: לוח עם 4 שוליים, חריץ ידית וחורים ל‑LiDAR, לרמקול ולצווארון',t:0.15,r:0.15,w:20,d:16.5,
+   holes:[S(0,-6.15,9,2.4),H(-7.8,3.85,0.16),H(-2.2,3.85,0.16),H(-7.8,-1.75,0.16),H(-2.2,-1.75,0.16),H(5.85,4.95,0.16),H(8.15,4.95,0.16),H(-0.6,-0.25,0.14),H(0.6,-0.25,0.14)],
+   c:[{e:'+z',d:0.85},{e:'-z',d:0.85},{e:'+x',d:0.85},{e:'-x',d:0.85}]}};
 let saved={}; try{ saved=JSON.parse(localStorage.getItem(LS)||'{}')||{}; }catch(e){ saved={}; }
 function save(){ try{ localStorage.setItem(LS,JSON.stringify(saved)); }catch(e){} }
 
@@ -476,7 +500,8 @@ function buildCfg(key){
     L.jump.add(cyl(1.0,0.2,DARK,'x',s*10.6,PY,PZ,20));
     { const h=s<0; [tag(drv,'מנוע נסיעה (בגוף)','mech',3.6),tag(act,'אקטואטור קפיצה','mech',-3.6)].forEach(l=>{ if(l&&h) l.userData.hoverOnly=true; }); }
     const car=new THREE.Group(); car.position.set(0,PY,PZ); car.rotation.x=PH0;
-    const arm=box(1.0,2.6,ARM_L+3.6,AM,s*12.1,0,-ARM_L/2); car.add(arm); o.parts.arm.push(arm);
+    let arm; [-0.35,0.35].forEach((dx,j)=>{ const T=FOLD.arm, R0=T.round, ol=[]; for(let i=0;i<=16;i++){ const a=Math.PI+i*Math.PI/16; ol.push([R0*Math.cos(a),-T.d/2+R0+R0*Math.sin(a)]); } for(let i=0;i<=16;i++){ const a=i*Math.PI/16; ol.push([R0*Math.cos(a),T.d/2-R0+R0*Math.sin(a)]); } ol.reverse();
+      const g=sheetGeo(ol,T.holes,0.3); g.rotateZ(Math.PI/2); const p=mesh(g,AM); p.position.set(s*12.1+dx,0,-ARM_L/2); car.add(p); o.parts.arm.push(p); if(!j) arm=p; });
     const p1=cyl(1.7,1.3,DARK,'x',s*12.1,0,0,24), p2=cyl(2.3,1.3,DARK,'x',s*12.1,0,-ARM_L,24); car.add(p1,p2); o.parts.belt.push(p1,p2);
     [1.05,-1.05].forEach(dy=>{ const bl=box(0.6,0.12,ARM_L,M('#1d1f22',{roughness:0.8}),s*12.75,dy*1.9,-ARM_L/2); car.add(bl); o.parts.belt.push(bl); });
     car.add(cyl(0.65,2.4,STEEL,'x',s*13.6,0,-ARM_L,20));
@@ -485,7 +510,10 @@ function buildCfg(key){
   // front cradle: one machined part that carries both arm pivots and all four motors, bolted to the beam's front face
   { const CR=M('#8E99A6',{metalness:0.7,roughness:0.3}), z0=5.5, z1=PZ+3.2, zc=(z0+z1)/2, LL=z1-z0, cr=new THREE.Group(); L.frame.add(cr);
     const P=(m,n)=>{ cr.add(m); o.frameBoxes.push([n,m]); m.userData.mfg='sheet'; return m; };
-    [1,-1].forEach(sx=>{ P(box(0.6,6.3,LL,CR,sx*11.15,PY+0.25,zc),'קורה קדמית למנועים'); P(box(0.4,6.0,LL-1,CR,sx*6.0,PY+0.4,zc-0.5),'קורה קדמית למנועים');
+    [1,-1].forEach(sx=>{ const side=(th,h,len,x,y,z,hr,extra)=>{ const sh=new THREE.Shape(); sh.moveTo(-(z-len/2),y-h/2); sh.lineTo(-(z+len/2),y-h/2); sh.lineTo(-(z+len/2),y+h/2); sh.lineTo(-(z-len/2),y+h/2); sh.closePath();
+        [[PZ,PY,hr],...(extra||[])].forEach(([hz,hy,r])=>{ const p=new THREE.Path(); p.absarc(-hz,hy,r,0,Math.PI*2,true); sh.holes.push(p); });
+        const g=new THREE.ExtrudeGeometry(sh,{depth:th,bevelEnabled:false,curveSegments:24}); g.translate(0,0,-th/2); g.rotateY(Math.PI/2); const m=mesh(g,CR); m.position.x=x; return m; };
+      P(side(0.6,6.3,LL,sx*11.15,PY+0.25,zc,1.25,[[zc+3.92,PY+3.05-5.25,0.2]]),'קורה קדמית למנועים'); P(side(0.4,6.0,LL-1,sx*6.0,PY+0.4,zc-0.5,1.0),'קורה קדמית למנועים');
       P(box(5.65,0.4,LL,CR,sx*8.63,PY+3.25,zc),'קורה קדמית למנועים'); P(cyl(1.6,0.25,CR,'x',sx*11.55,PY,PZ,24),'קורה קדמית למנועים');
       [[PY+3.25,z0+0.6],[PY+3.25,z1-0.8],[PY-2.2,z1-0.8]].forEach(([y,z])=>{ const h=screwHead(sx*11.5,y,z,'x'); h.userData.hw=true; cr.add(h); });
     });
@@ -554,7 +582,7 @@ const FRAMES={
   const my=(BT-0.15+FLOOR_TOP)/2;
   [1,-1].forEach(sx=>{ F(box(0.12,BT-0.15-FLOOR_TOP,2*BZ-0.3,ALU,sx*3.75,my,0),'מחיצה'); F(box(0.8,8.2,2*BZ,CNC,sx*10.95,16.6,0),'מכסה קצה');
     [[2.6,4.0],[2.6,-4.0],[-1.8,4.0],[-1.8,-4.0]].forEach(([dy,dz])=>o.L.frame.add(screwHead(sx*11.45,16.6+dy,dz,'x')));
-    const a=box(1.2,0.3,5.7,ALU,sx*7,20.6,-8.15); a.rotation.x=0.393; o.L.frame.add(a); });
+    const a=box(1.2,0.3,5.7,ALU,sx*7,20.6,-8.15); a.rotation.x=0.393; o.L.frame.add(a); [-2.3,2.3].forEach(z=>{ const h=screwHead(0,0.2,z,'y'); h.userData.hw=true; a.add(h); }); });
   o.L.frame.add(box(6,0.15,2.6,ALU,0,FLOOR_TOP-0.07,7.0));
   F(hPlate(-8.4,-12.3,16.8,6.8,0.3,null,0.15,FLOOR_TOP,ALU),'מגש סוללה אחורי'); [1,-1].forEach(sx=>F(box(0.15,4.6,6.8,ALU,sx*8.4,FLOOR_TOP+2.3,-8.9),'מגש סוללה אחורי')); tagAt(o.L.frame,'מגש סוללה אחורי','fr',0,18.6,-9);
   tagAt(o.L.frame,'קורה = קופסת סוללה','fr',-7,21.7,5.2);
@@ -567,8 +595,8 @@ function buildMast(o,F){
   o.tubes=SECT.map((s,i)=>{ const t=tube(s[0],s[1],s[2],TL,M(TUBEC[i],i?{metalness:0.3,roughness:0.45}:{metalness:0.55,roughness:0.38}),0,s[3],mz); return F(t,SECT_NAMES[i],o.mastG[i]); });
   o.tubes.forEach((t,i)=>{ if(i>0){ const s=SECT[i]; [-1,1].forEach(k=>o.mastG[i].add(box(0.12,1.2,s[1]*0.6,M('#f3efe6'),k*(s[0]/2+0.06),s[3]+0.9,mz))); } });
   // head mount: a machined plug inside the top of the inner tube, locked by a cross pin; the head shelf is screwed down onto it
-  F(box(2.05,1.5,1.05,CNC,0,HEAD_TOP-0.15-0.75,mz),'צווארון ראש',o.upper);
-  { const pin=cyl(0.18,2.9,STEEL,'x',0,HEAD_TOP-0.95,mz,10); o.upper.add(pin); o.frameBoxes.push(['צווארון ראש',pin]);
+  F(box(2.8,0.2,1.8,CNC,0,HEAD_TOP-0.25,mz),'צווארון ראש',o.upper); [1,-1].forEach(k=>F(box(0.2,1.6,1.8,CNC,k*1.3,HEAD_TOP-0.35-0.8,mz),'צווארון ראש',o.upper));
+  { const pin=cyl(0.18,3.2,STEEL,'x',0,HEAD_TOP-0.95,mz,10); o.upper.add(pin); o.frameBoxes.push(['צווארון ראש',pin]);
     [-0.6,0.6].forEach(x=>{ const h=screwHead(x,HEAD_TOP+0.09,mz,'y'); h.userData.hw=true; o.upper.add(h); }); }
   const h=C.housing; F(box(h[0],h[1],h[2],MECH,h[3],FLOOR_TOP+0.9,h[4]),'תיבת הינע',o.mechFixed);
   const motor=new THREE.Group(); motor.add(box(3,4.2,3,BLACK,0,-0.4,0)); motor.add(cyl(1.3,0.8,MECH,'y',0,2.1,0,24)); motor.position.set(C.motor[0],B0+2.5,C.motor[1]);
@@ -637,7 +665,7 @@ function addMounts(o){
     if(sp.k==='so'){ if(sp.ax==='y'){ [[mn.x+ins,mn.z+ins],[mx.x-ins,mn.z+ins],[mn.x+ins,mx.z-ins],[mx.x-ins,mx.z-ins]].forEach(([x,z])=>{ put(cyl(0.22,0.3,NY,'y',x,mn.y-0.05,z,10),'buy'); put(cyl(0.26,0.1,HW,'y',x,mx.y+0.05,z,10),'buy'); }); }
       else { const L=sp.len||0.6, zf=sp.dir>0?mx.z:mn.z, sgn=sp.dir>0?1:-1; [[mn.x+ins,mn.y+ins],[mx.x-ins,mn.y+ins],[mn.x+ins,mx.y-ins],[mx.x-ins,mx.y-ins]].forEach(([x,y])=>{ put(cyl(0.22,L,NY,'z',x,y,zf+sgn*L/2,10),'buy'); put(cyl(0.26,0.1,HW,'z',x,y,(sp.dir>0?mn.z:mx.z)-sgn*0.05,10),'buy'); }); } }
     if(sp.k==='damp'){ [[mn.x+0.3,mn.z+0.3],[mx.x-0.3,mn.z+0.3],[mn.x+0.3,mx.z-0.3],[mx.x-0.3,mx.z-0.3]].forEach(([x,z])=>put(cyl(0.3,0.35,RB,'y',x,mn.y-0.15,z,12),'buy')); }
-    if(sp.k==='brk'){ const zb=sp.d<0?mn.z-0.15:mx.z+0.15, yb=c.part==='upper'?Math.max(mn.y-0.6,HEAD_TOP-c.pos[1]):mn.y-0.6, yt=mx.y+0.2; { const bk=box(w*0.55,yt-yb,0.3,PR,cx,(yt+yb)/2,zb); bk.userData.brk=true; put(bk,'sheet'); } if(c.part==='upper'){ const bk=box(w*0.55,0.3,1.6,PR,cx,yb+0.15,zb+(sp.d<0?-0.8:0.8)); bk.userData.brk=true; put(bk,'sheet'); } [-1,1].forEach(k=>put(cyl(0.26,0.1,HW,'z',cx+k*w*0.2,cy-0.2,zb+(sp.d<0?-0.2:0.2),10),'buy')); }
+    if(sp.k==='brk'){ const zb=sp.d<0?mn.z-0.15:mx.z+0.15, yb=c.part==='upper'?Math.max(mn.y-0.6,HEAD_TOP-c.pos[1]):mn.y-0.6, yt=mx.y+0.2; { const bk=box(w*0.55,yt-yb,0.3,PR,cx,(yt+yb)/2,zb); bk.userData.brk=true; put(bk,'sheet'); } if(c.part==='upper'){ const bk=box(w*0.55,0.3,1.6,PR,cx,yb+0.15,zb+(sp.d<0?-0.8:0.8)); bk.userData.brk=true; put(bk,'sheet'); [-1,1].forEach(k=>put(cyl(0.26,0.1,HW,'y',cx+k*w*0.17,yb+0.35,zb+(sp.d<0?-0.9:0.9),10),'buy')); } [-1,1].forEach(k=>put(cyl(0.26,0.1,HW,'z',cx+k*w*0.2,cy-0.2,zb+(sp.d<0?-0.2:0.2),10),'buy')); }
     if(sp.k==='screws'){ const n=sp.n||4; const pts=n===2?[[mn.x+ins,cz],[mx.x-ins,cz]]:null;
       if(sp.face==='z+'){ [[mn.x+1,mn.y+1],[mx.x-1,mn.y+1],[mn.x+1,mx.y-1],[mx.x-1,mx.y-1]].forEach(([x,y])=>put(cyl(0.28,0.12,HW,'z',x,y,mx.z+0.06,10),'buy')); }
       else { (pts||[[mn.x+ins,mn.z+ins],[mx.x-ins,mn.z+ins],[mn.x+ins,mx.z-ins],[mx.x-ins,mx.z-ins]]).forEach(([x,z])=>put(cyl(0.26,0.12,HW,'y',x,mn.y-0.06,z,10),'buy')); } }
@@ -958,48 +986,20 @@ document.getElementById('v360').onclick=()=>{ const on=!orbit.autoRotate; if(on)
 const EX={on:false,k:0};
 // ---------- manufacturing tour: explode, then focus each chassis part in turn and show what it is made of (final product) ----------
 const TOUR=[
- {f:/^קורה \(|מחיצה|מגש סוללה/,n:'גוף ראשי: קורה, מחיצות ומגש סוללה',m:'אלומיניום 5052, 1.5 מ״מ',t:'חיתוך לייזר וכיפוף, עם אומי PEM לחיצה ומסמרות',w:'קופסה מכופפת מכמה חלקי פח. אין ריתוך ואין כרסום.',k:'sheet',fold:'body'},
+ {f:/^קורה \(|מחיצה/,n:'קורה ראשית',m:'אלומיניום 5052, 1.5 מ״מ',t:'חיתוך לייזר וכיפוף, השוליים מחוברים במסמרות ואומי PEM',w:'פח אחד שמתקפל לצינור מלבני. 2 המחיצות שבפנים הן פסים שטוחים נפרדים.',k:'sheet',fold:'body'},
+ {f:/מגש סוללה/,n:'מגש סוללה אחורי',m:'אלומיניום 5052, 1.5 מ״מ',t:'חיתוך לייזר וכיפוף לצורת U',w:'מוברג לגב הקורה ומחזיק את הסוללה ואת מאגר ההספק.',k:'sheet',fold:'tray'},
  {f:/מכסה קצה/,n:'מכסי קצה',m:'אלומיניום 5052, 2 מ״מ',t:'חיתוך לייזר וכיפוף לצורת U',w:'סוגרים את צידי הגוף ונותנים לו קשיחות לפיתול.',k:'sheet',fold:'cap'},
  {f:/קורה קדמית/,n:'קורה קדמית למנועים',m:'אלומיניום 5052, 3 מ״מ',t:'חיתוך לייזר וכיפוף, מיסבים קנויים עם אוגן מוברגים לפח',w:'מחזיקה 4 מנועים ו‑2 צירי זרועות. כל עומס הנחיתה עובר דרכה.',k:'sheet',fold:'cradle'},
  {p:'arm',n:'זרועות נדנדה',m:'אלומיניום 5052, 3 מ״מ, 2 לוחות לכל זרוע',t:'חיתוך לייזר, מרווחים וברגים ביניהם',w:'מחברות את הגלגל לגוף, והרצועה עוברת ביניהן.',k:'sheet',fold:'arm'},
  {p:'pul',n:'גלגלות רצועה',m:'אלומיניום',t:'קנויות (גלגלות GT3 סטנדרטיות)',w:'2 בכל זרוע: קטנה על המנוע וגדולה על הגלגל.',k:'buy'},
- {f:/לוח שדרה/,n:'לוח שדרה',m:'אלומיניום 5052, 1.5 מ״מ',t:'חיתוך לייזר וכיפוף שוליים',w:'מחזיק את המחשב מאחור ואת הבקר מלפנים.',k:'sheet',fold:'spine'},
- {f:/זרועות מסך/,n:'זרועות מסך',m:'אלומיניום 5052, 2 מ״מ',t:'חיתוך לייזר וכיפוף לזווית של המסך',w:'מחזיקות את המסך בזווית של 32° מול הרץ.',k:'sheet',fold:'sarm'},
+ {f:/לוח שדרה/,n:'לוח שדרה',m:'אלומיניום 5052, 3 מ״מ',t:'חיתוך לייזר, בלי כיפוף',w:'מחזיק את המחשב מאחור ואת הבקר מלפנים.',k:'sheet',fold:'spine'},
+ {f:/זרועות מסך/,n:'זרועות מסך',m:'אלומיניום 5052, 3 מ״מ',t:'חיתוך לייזר, בלי כיפוף',w:'מחזיקות את המסך בזווית של 32° מול הרץ.',k:'sheet',fold:'sarm'},
  {f:/מקטע/,n:'3 מקטעי העמוד',m:'פחמן',t:'צינורות מלבניים קנויים, חיתוך לאורך',w:'נכנסים זה לתוך זה ונפתחים 23 ס״מ.',k:'tube'},
  {f:/צווארון/,n:'צווארון ראש',m:'אלומיניום 5052, 2 מ״מ',t:'חיתוך לייזר וכיפוף לתפס',w:'עוטף את ראש הצינור הפנימי ונעול בבורג רוחבי.',k:'sheet',fold:'collar'},
  {f:/תיבת הינע/,n:'תיבת ההינע של העמוד',m:'אלומיניום 5052, 1 מ״מ',t:'חיתוך לייזר וכיפוף',w:'מכסה על הרצועה והגלגלות של מנגנון ההרמה.',k:'sheet',fold:'gear'},
- {p:'brk',n:'תושבות מצלמות',m:'אלומיניום 5052, 1.5 מ״מ',t:'חיתוך לייזר וכיפוף לזווית',w:'נותנות למצלמה הקדמית את ההטיה של 15°.',k:'sheet',fold:'brk'},
+ {p:'brk',n:'תושבות מצלמות',m:'אלומיניום 5052, 1.5 מ״מ',t:'חיתוך לייזר וכיפוף ל‑L (האחורית) או לוח שטוח (הקדמית)',w:'הפריסה כאן היא של התושבת האחורית, שמוברגת למדף הראש.',k:'sheet',fold:'brk'},
  {f:/^מדף עליון$|שוליים/,n:'מדף הראש',m:'אלומיניום 5052, 1.5 מ״מ',t:'חיתוך לייזר וכיפוף שוליים, עם חריץ הידית',w:'השוליים המכופפים נותנים לו קשיחות.',k:'sheet',fold:'shelf'},
  {f:/רגלית גומי|פגוש/,n:'רגליות ופגוש',m:'TPE',t:'קנויים או יצוקים',w:'במנוחה הגוף נשען על הרגליות. הפגוש מגן על הראש.',k:'rub'}];
-// ---------- sheet-metal flat patterns: thickness t, inner bend radius r, K-factor 0.33, bend allowance, holes, cut-outs and bend reliefs ----------
-// panel coords: base is centred (x across, z along); a flap's holes use u = along its hinge (0 = middle), v = distance out from the end of the bend.
-const H=(x,z,r)=>({c:[x,z,r]}), S=(x,z,w,h)=>({s:[x,z,w,h]});
-const FOLD={
- body:{n:'קופסה: בסיס, 4 דפנות ושוליים להברגה',t:0.15,r:0.15,w:21.1,d:11,
-   holes:[S(-5,0,4.2,2.2),S(5,0,4.2,2.2),H(-9.6,-4.6,0.17),H(9.6,-4.6,0.17),H(-9.6,4.6,0.17),H(9.6,4.6,0.17),H(0,0,0.9)],
-   c:[{e:'+z',d:7.6,holes:[S(0,3.6,4.2,2.6),H(-7,5.5,0.5),H(7,5.5,0.5)],c:[{e:'+z',d:1.2,holes:[H(-7,0.6,0.17),H(0,0.6,0.17),H(7,0.6,0.17)]}]},
-      {e:'-z',d:7.6,holes:[H(-3,4,0.6),H(3,4,0.6),S(0,1.8,6,1)],c:[{e:'-z',d:1.2,holes:[H(-7,0.6,0.17),H(0,0.6,0.17),H(7,0.6,0.17)]}]},
-      {e:'+x',d:7.6,holes:[H(-4,1.8,0.17),H(4,1.8,0.17),H(-4,6,0.17),H(4,6,0.17),H(0,3.9,1.1)]},{e:'-x',d:7.6,holes:[H(-4,1.8,0.17),H(4,1.8,0.17),H(-4,6,0.17),H(4,6,0.17),H(0,3.9,1.1)]}]},
- cap:{n:'U: לוח צד ו‑2 כנפיים להברגה לקורה',t:0.2,r:0.2,w:8.2,d:11,
-   holes:[H(-2.6,-4,0.2),H(2.6,-4,0.2),H(-2.6,4,0.2),H(2.6,4,0.2),S(0,0,1.6,4)],
-   c:[{e:'+x',d:1.5,holes:[H(-3.5,0.75,0.17),H(3.5,0.75,0.17)]},{e:'-x',d:1.5,holes:[H(-3.5,0.75,0.17),H(3.5,0.75,0.17)]}]},
- cradle:{n:'U לכל צד: גשר עליון, דופן חיצונית עם מיסב, דופן פנימית עם המנועים',t:0.3,r:0.3,w:5.6,d:9.4,
-   holes:[H(0,-3.4,0.22),H(0,3.4,0.22),S(0,0,2.4,3)],
-   c:[{e:'+x',d:6.3,holes:[H(2.2,3.4,1.25),H(2.2+1.9,3.4,0.17),H(2.2-1.9,3.4,0.17),H(2.2,3.4+1.9,0.17),H(2.2,3.4-1.9,0.17),H(-3.4,1.2,0.22),H(-3.4,5,0.22)]},
-      {e:'-x',d:6.3,holes:[H(2.2,3.4,1.0),H(2.2+2.2,3.4,0.15),H(2.2-2.2,3.4,0.15),H(2.2,3.4+2.2,0.15),H(2.2,3.4-2.2,0.15),H(-3.4,3.4,0.5)]}]},
- arm:{n:'שטוח: חיתוך לייזר בלבד, בלי כיפוף. 2 לוחות זהים לכל זרוע',t:0.3,r:0,w:2.6,d:15.6,round:1.3,flat:true,
-   holes:[H(0,-6.5,0.55),H(0,6.5,0.65),H(0,-3.2,0.2),H(0,3.2,0.2),S(0,0,0.9,3.2)],c:[]},
- spine:{n:'לוח עם 2 שוליים מכופפים לקשיחות',t:0.15,r:0.15,w:11.5,d:11.3,
-   holes:[H(-1,-2.2,0.16),H(5.6,-2.2,0.16),H(-1,3.4,0.16),H(5.6,3.4,0.16),H(-5.4,-1.8,0.16),H(-2.8,-1.8,0.16),H(-5.4,2.6,0.16),H(-2.8,2.6,0.16),S(2.3,-4.6,3.2,0.9),H(-4,-4.8,0.17),H(4,-4.8,0.17)],
-   c:[{e:'+x',d:1},{e:'-x',d:1}]},
- sarm:{n:'L: פס ורגל להברגה לגב הקורה',t:0.2,r:0.2,w:1.2,d:5.7,holes:[H(0,1.2,0.14),H(0,2.6,0.14),S(0,-1.2,0.5,1.4)],c:[{e:'-z',d:2,holes:[H(0,1,0.2)]}]},
- collar:{n:'U קטן שעוטף את הצינור, עם חור לבורג הרוחבי',t:0.2,r:0.2,w:2.6,d:1.8,holes:[H(-0.6,0,0.14),H(0.6,0,0.14)],c:[{e:'+x',d:1.6,holes:[H(0,0.95,0.18)]},{e:'-x',d:1.6,holes:[H(0,0.95,0.18)]}]},
- gear:{n:'U: מכסה עם חריצי אוורור ו‑2 לשוניות',t:0.1,r:0.1,w:3.6,d:6.9,holes:[S(0,-1.6,2,0.3),S(0,-0.8,2,0.3),S(0,0,2,0.3),S(0,0.8,2,0.3)],c:[{e:'+x',d:1.8,holes:[H(-2.4,1.2,0.14),H(2.4,1.2,0.14)]},{e:'-x',d:1.8,holes:[H(-2.4,1.2,0.14),H(2.4,1.2,0.14)]}]},
- brk:{n:'L בזווית 75°: בסיס ודופן למצלמה',t:0.15,r:0.15,w:5,d:1.6,holes:[H(-1.6,0,0.16),H(1.6,0,0.16)],c:[{e:'+z',d:3.6,a:75,holes:[H(-1.5,2.2,0.15),H(1.5,2.2,0.15),S(0,1,1.4,0.6)]}]},
- shelf:{n:'מגש: לוח עם 4 שוליים, חריץ ידית, תבנית ברגים ל‑LiDAR וחורי רמקול',t:0.15,r:0.15,w:22.6,d:16.5,
-   holes:[S(0,5.9,9,2.4),H(-5,-1.3,0.8),H(-7.5,-3.8,0.16),H(-2.5,-3.8,0.16),H(-7.5,1.2,0.16),H(-2.5,1.2,0.16),H(5,0.3,0.4),H(-0.6,0,0.14),H(0.6,0,0.14),
-     ...[[-0.5,-0.5],[0.5,-0.5],[-0.5,0.5],[0.5,0.5],[0,0]].map(([a,b])=>H(7+a,-5.2+b,0.15)),S(0,-6.95,6,0.8)],
-   c:[{e:'+z',d:1},{e:'-z',d:1},{e:'+x',d:1},{e:'-x',d:1}]}};
 const FK=0.33, BA=(T,deg)=>(deg*Math.PI/180)*(T.r+FK*T.t);
 const FV={r:null,sc:null,cam:null,root:null,hinges:[],key:null,cv:null};
 function foldInit(){ if(FV.r) return; FV.cv=document.createElement('canvas'); FV.cv.className='tc-fold'; FV.r=new THREE.WebGLRenderer({canvas:FV.cv,antialias:true,alpha:true}); FV.r.setPixelRatio(Math.min(2,window.devicePixelRatio||1)); FV.r.setSize(328,190,false);
@@ -1041,7 +1041,7 @@ function foldBuild(key){ foldInit(); if(FV.root){ FV.sc.remove(FV.root); FV.root
   flaps(root,T.w,T.d,T.c||[],0,0,edges,0); FV.sc.add(root);
   const b=new THREE.Box3().setFromObject(root), sz=b.getSize(new THREE.Vector3()), rd=Math.max(sz.x,sz.z)*0.74+1.5; FV.cam.position.set(rd*0.45,rd*1.35,rd*1.25); FV.cam.lookAt(0,0,0); root.position.y=-0.6;
   // flat-pattern size and bend data for the caption
-  FV.info='עובי '+(t*10).toFixed(1)+' מ״מ · רדיוס כיפוף '+(T.r*10).toFixed(1)+' מ״מ · K=0.33'+(T.flat?'':' · תוספת כיפוף '+(BA(T,90)*10).toFixed(2)+' מ״מ')+' · פריסה '+(sz.x*10).toFixed(0)+'×'+(sz.z*10).toFixed(0)+' מ״מ · '+(T.holes||[]).length+' חורים בבסיס'; }
+  FV.info='עובי '+(t*10).toFixed(1)+' מ״מ'+(T.flat?' · בלי כיפוף':' · רדיוס כיפוף '+(T.r*10).toFixed(1)+' מ״מ · K=0.33 · תוספת כיפוף '+(BA(T,90)*10).toFixed(2)+' מ״מ')+' · פריסה '+(sz.x*10).toFixed(0)+'×'+(sz.z*10).toFixed(0)+' מ״מ · '+(T.holes||[]).length+' חורים'+((T.c||[]).length?' בבסיס':''); }
 function foldSet(k){ FV.hinges.forEach(h=>{ if(h.g){ const a=h.a*k; if(h.ax==='z') h.g.rotation.x=-h.sg*a; else h.g.rotation.z=h.sg*a; } if(h.line) h.line.visible=k<0.5; }); }
 const TOURC={sheet:'#4C8BF5',tube:'#8E44AD',rub:'#2FA36B',buy:'#9AA3AD'};
 const TR={on:false,i:0,t:0,pause:false,prevMode:1,dimmed:[]};
